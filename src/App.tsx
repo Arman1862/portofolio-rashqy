@@ -64,7 +64,7 @@ export default function App() {
           {/* Action / Menu Trigger */}
           <div className="flex items-center gap-2">
             <a
-              href="mailto:rasqhy@example.com"
+              href="mailto:nurielrasqhy@gmail.com"
               className="flex items-center gap-2 px-4 py-1.5 md:px-5 md:py-2 rounded-full text-[10px] font-bold font-sans glass-panel glass-panel-hover border border-white/5 text-white hover:scale-105 active:scale-95 transition-all duration-300"
             >
               LET'S TALK
@@ -157,17 +157,6 @@ export default function App() {
             title="Instagram"
           >
             <Instagram size={18} />
-          </a>
-          <a
-            href="https://www.tiktok.com/@sky_qhy"
-            target="_blank"
-            rel="noreferrer"
-            className="text-muted-foreground hover:text-white transition-colors duration-300"
-            title="TikTok"
-          >
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-            </svg>
           </a>
           <a
             href="https://wa.me/62881010316931"

@@ -87,7 +87,7 @@ export default function Home() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <a
-              href="mailto:rasqhy@example.com"
+              href="mailto:nurielrasqhy@gmail.com"
               className="flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-4 rounded-full bg-blue-500 text-white font-bold font-sans shadow-lg shadow-blue-500/20 hover:bg-blue-600 transition-all duration-300 cursor-pointer"
             >
               <Mail size={16} />
