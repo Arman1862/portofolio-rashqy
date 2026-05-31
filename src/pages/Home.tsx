@@ -13,7 +13,7 @@ export default function Home() {
 
   // Play the first video as showreel mockup
   const handlePlayReel = () => {
-    const firstVideo = works.find((w) => w.category === "video");
+    const firstVideo = works.find((w) => w.category === "film" || w.category === "editing");
     if (firstVideo) {
       setSelectedWork(firstVideo);
     }
@@ -24,9 +24,11 @@ export default function Home() {
     document.getElementById("gateway-section")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const handleSelectCategory = (category: "video" | "photo") => {
-    if (category === "video") {
+  const handleSelectCategory = (category: 'film' | 'editing' | 'photo') => {
+    if (category === "film") {
       navigate("/works#films");
+    } else if (category === "editing") {
+      navigate("/works#editing");
     } else {
       navigate("/works#photography");
     }

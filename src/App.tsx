@@ -12,6 +12,7 @@ export default function App() {
 
   const isHomeActive = currentPath === "/" || currentPath === "";
   const isFilmsActive = currentPath === "/works#films" || (location.pathname === "/works" && !location.hash);
+  const isEditingActive = currentPath === "/works#editing";
   const isPhotoActive = currentPath === "/works#photography";
 
   return (
@@ -48,6 +49,16 @@ export default function App() {
               }`}
             >
               FILMS
+            </Link>
+            <Link
+              to="/works#editing"
+              className={`px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wider transition-all duration-300 ${
+                isEditingActive
+                  ? "text-blue-400 bg-blue-500/10 border border-blue-500/20"
+                  : "text-muted-foreground hover:text-white hover:bg-white/5 border border-transparent"
+              }`}
+            >
+              EDITING
             </Link>
             <Link
               to="/works#photography"
@@ -116,6 +127,18 @@ export default function App() {
                 {isFilmsActive && <span className="w-1 h-1 rounded-full bg-blue-400"></span>}
               </Link>
               <Link
+                to="/works#editing"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-4 py-2.5 rounded-xl text-[10px] font-bold tracking-wider transition-all duration-300 flex justify-between items-center ${
+                  isEditingActive
+                    ? "text-blue-400 bg-blue-500/10 border border-blue-500/20"
+                    : "text-muted-foreground hover:text-white hover:bg-white/5 border border-transparent"
+                }`}
+              >
+                <span>EDITING</span>
+                {isEditingActive && <span className="w-1 h-1 rounded-full bg-blue-400"></span>}
+              </Link>
+              <Link
                 to="/works#photography"
                 onClick={() => setMobileMenuOpen(false)}
                 className={`px-4 py-2.5 rounded-xl text-[10px] font-bold tracking-wider transition-all duration-300 flex justify-between items-center ${
@@ -165,8 +188,8 @@ export default function App() {
             className="text-muted-foreground hover:text-white transition-colors duration-300"
             title="WhatsApp"
           >
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.5-5.729-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.725 1.45 5.518 0 10.011-4.493 10.014-10.011.002-2.673-1.037-5.186-2.93-7.079-1.892-1.893-4.407-2.934-7.087-2.935-5.522 0-10.016 4.493-10.02 10.01-.001 1.734.452 3.425 1.314 4.912L1.082 20.89l3.864-1.013c1.5.82 3.12 1.25 4.7 1.25zM15.54 11.75c-.26-.13-1.56-.77-1.8-.86-.24-.09-.42-.13-.6.13-.18.26-.69.86-.85 1.04-.16.18-.32.2-.58.07a7.31 7.31 0 0 1-2.16-1.33 8.08 8.08 0 0 1-1.49-1.86c-.16-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.18-.26.26-.43.09-.17.04-.32-.02-.45-.07-.13-.6-1.43-.82-1.97-.22-.53-.44-.45-.6-.46-.15-.01-.33-.01-.52-.01-.19 0-.49.07-.74.34-.26.27-.99.97-.99 2.37s1.02 2.76 1.16 2.95c.14.19 2 3.06 4.85 4.29.68.29 1.21.47 1.62.6.68.22 1.3.19 1.79.12.55-.08 1.56-.64 1.78-1.25.22-.61.22-1.13.15-1.25-.07-.12-.26-.19-.52-.32z"/>
             </svg>
           </a>
         </div>

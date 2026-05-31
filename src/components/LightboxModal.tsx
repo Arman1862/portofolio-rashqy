@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Film, Camera } from "lucide-react";
+import { X, Film, Camera, Scissors } from "lucide-react";
 import type { WorkItem } from "../data/works";
 
 interface LightboxModalProps {
@@ -52,7 +52,7 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
 
             {/* Media Area (Left side) */}
             <div className="w-full md:w-[65%] bg-black flex items-center justify-center relative aspect-video md:aspect-auto md:h-full min-h-[250px] md:min-h-[450px]">
-              {work.category === "video" && work.videoUrl ? (
+              {(work.category === "film" || work.category === "editing") && work.videoUrl ? (
                 <iframe
                   src={work.videoUrl}
                   title={work.title}
@@ -74,17 +74,22 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
               <div className="space-y-6">
                 
                 {/* Category Pill */}
-                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-blue-400">
-                  {work.category === "video" ? (
-                    <>
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider">
+                  {work.category === "film" ? (
+                    <div className="flex items-center gap-2 text-blue-400">
                       <Film size={14} />
-                      <span>FILMS & EDITING</span>
-                    </>
+                      <span>FILM</span>
+                    </div>
+                  ) : work.category === "editing" ? (
+                    <div className="flex items-center gap-2 text-amber-400">
+                      <Scissors size={14} />
+                      <span>VIDEO EDITING</span>
+                    </div>
                   ) : (
-                    <>
+                    <div className="flex items-center gap-2 text-purple-400">
                       <Camera size={14} />
                       <span>PHOTOGRAPHY</span>
-                    </>
+                    </div>
                   )}
                 </div>
 

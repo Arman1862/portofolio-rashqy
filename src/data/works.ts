@@ -1,7 +1,7 @@
 export interface WorkItem {
   id: number;
   title: string;
-  category: 'video' | 'photo';
+  category: 'film' | 'editing' | 'photo';
   role: string;
   thumbnail: string;
   videoUrl?: string;
@@ -13,7 +13,7 @@ export const works: WorkItem[] = [
   {
     id: 1,
     title: "Echoes of Silence",
-    category: "video",
+    category: "film",
     role: "Director & Lead Editor",
     thumbnail: "/assets/thumb_echoes.png",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
@@ -31,7 +31,7 @@ export const works: WorkItem[] = [
   {
     id: 3,
     title: "Beyond the Horizon",
-    category: "video",
+    category: "editing",
     role: "Video Editor & Colorist",
     thumbnail: "/assets/thumb_horizon.png",
     videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",

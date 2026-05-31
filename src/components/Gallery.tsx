@@ -5,12 +5,12 @@ import { works } from "../data/works";
 import type { WorkItem } from "../data/works";
 
 interface GalleryProps {
-  selectedCategory: 'all' | 'video' | 'photo';
+  selectedCategory: 'all' | 'film' | 'editing' | 'photo';
   onSelectWork: (work: WorkItem) => void;
 }
 
 export default function Gallery({ selectedCategory, onSelectWork }: GalleryProps) {
-  const [filter, setFilter] = useState<'all' | 'video' | 'photo'>(selectedCategory);
+  const [filter, setFilter] = useState<'all' | 'film' | 'editing' | 'photo'>(selectedCategory);
 
   // Sync state if selectedCategory prop changes (e.g. clicked from CategorySplit)
   useEffect(() => {
@@ -45,14 +45,24 @@ export default function Gallery({ selectedCategory, onSelectWork }: GalleryProps
               ALL
             </button>
             <button
-              onClick={() => setFilter("video")}
+              onClick={() => setFilter("film")}
               className={`px-4 py-2 text-xs font-semibold rounded-full tracking-wider transition-all duration-300 cursor-pointer ${
-                filter === "video"
+                filter === "film"
                   ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20"
                   : "text-muted-foreground hover:text-white"
               }`}
             >
               FILMS
+            </button>
+            <button
+              onClick={() => setFilter("editing")}
+              className={`px-4 py-2 text-xs font-semibold rounded-full tracking-wider transition-all duration-300 cursor-pointer ${
+                filter === "editing"
+                  ? "bg-blue-500 text-white shadow-lg shadow-blue-500/20"
+                  : "text-muted-foreground hover:text-white"
+              }`}
+            >
+              EDITING
             </button>
             <button
               onClick={() => setFilter("photo")}
@@ -96,7 +106,7 @@ export default function Gallery({ selectedCategory, onSelectWork }: GalleryProps
                     />
                     {/* Hover dark overlay */}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      {work.category === "video" ? (
+                      {work.category === "film" || work.category === "editing" ? (
                         <div className="w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/40 transform scale-90 group-hover:scale-100 transition-transform duration-300">
                           <Play size={20} fill="currentColor" className="ml-1" />
                         </div>
@@ -112,7 +122,7 @@ export default function Gallery({ selectedCategory, onSelectWork }: GalleryProps
                   <div className="flex justify-between items-start pt-2">
                     <div className="space-y-1">
                       <span className="text-[10px] font-semibold tracking-widest text-muted-foreground uppercase">
-                        {work.category === "video" ? "Film & Editing" : "Photography"}
+                        {work.category === "film" ? "Films" : work.category === "editing" ? "Video Editing" : "Photography"}
                       </span>
                       <h3 className="text-lg md:text-xl font-bold font-heading text-white group-hover:text-blue-400 transition-colors duration-300">
                         {work.title}
