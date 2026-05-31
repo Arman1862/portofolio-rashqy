@@ -279,7 +279,7 @@ export default function Home() {
             
             {/* Left: Program Monitor (Preview Screen) */}
             <div className="lg:col-span-5 w-full flex flex-col">
-              <div className="w-full aspect-video lg:aspect-auto lg:h-full rounded-2xl bg-neutral-950/80 border border-white/5 p-6 md:p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl shadow-black/80 backdrop-blur-xl">
+              <div className="w-full aspect-video lg:aspect-auto lg:h-full min-h-[260px] sm:min-h-[280px] lg:min-h-0 rounded-2xl bg-neutral-950/80 border border-white/5 p-6 md:p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl shadow-black/80 backdrop-blur-xl">
                 
                 {/* Viewport pulsers / decorative grid */}
                 <div className="absolute inset-0 bg-dot-pattern opacity-10 pointer-events-none" />
