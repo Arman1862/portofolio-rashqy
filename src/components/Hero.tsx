@@ -7,11 +7,31 @@ interface HeroProps {
 }
 
 const softwareSkills = [
-  { name: "Premiere Pro", short: "Pr", color: "text-[#9999FF] border-[#9999FF]/20 bg-[#9999FF]/5" },
-  { name: "After Effects", short: "Ae", color: "text-[#D199FF] border-[#D199FF]/20 bg-[#D199FF]/5" },
-  { name: "Photoshop", short: "Ps", color: "text-[#31A8FF] border-[#31A8FF]/20 bg-[#31A8FF]/5" },
-  { name: "Lightroom", short: "Lr", color: "text-[#31F9FF] border-[#31F9FF]/20 bg-[#31F9FF]/5" },
-  { name: "DaVinci Resolve", short: "Dr", color: "text-[#FF9966] border-[#FF9966]/20 bg-[#FF9966]/5" },
+  { 
+    name: "DaVinci Resolve", 
+    short: "Dr", 
+    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/d/d4/DaVinci_Resolve_18_logo.png" 
+  },
+  { 
+    name: "Premiere Pro", 
+    short: "Pr", 
+    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/4/40/Adobe_Premiere_Pro_CC_icon.svg" 
+  },
+  { 
+    name: "Lightroom Classic", 
+    short: "LrC", 
+    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/b/b6/Adobe_Photoshop_Lightroom_Classic_CC_icon.svg" 
+  },
+  { 
+    name: "Lightroom Mobile", 
+    short: "Lr", 
+    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/e/eb/Adobe_Lightroom_CC_icon.svg" 
+  },
+  { 
+    name: "Canva", 
+    short: "Cv", 
+    iconUrl: "https://upload.wikimedia.org/wikipedia/commons/0/08/Canva_icon_2021.svg" 
+  },
 ];
 
 export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
@@ -109,14 +129,29 @@ export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
           className="pt-8 flex flex-col gap-3"
         >
           <span className="text-xs tracking-wider text-muted-foreground uppercase font-semibold">Available for Freelance</span>
-          <div className="flex flex-wrap gap-2.5">
+          <div className="flex flex-wrap gap-3">
             {softwareSkills.map((skill) => (
               <div
                 key={skill.name}
                 title={skill.name}
-                className={`flex items-center justify-center w-11 h-11 text-sm font-bold rounded-lg border font-heading glass-panel select-none ${skill.color}`}
+                className="group relative flex items-center justify-center w-12 h-12 rounded-xl border border-white/10 bg-neutral-900/60 backdrop-blur-md hover:border-white/30 hover:bg-neutral-800/80 transition-all duration-300 select-none p-2 shadow-lg shadow-black/30"
               >
-                {skill.short}
+                <img
+                  src={skill.iconUrl}
+                  alt={skill.name}
+                  className="w-8 h-8 object-contain transition-transform duration-300 group-hover:scale-110"
+                  onError={(e) => {
+                    // Fallback to text initials if image fails to load
+                    e.currentTarget.style.display = 'none';
+                    const parent = e.currentTarget.parentElement;
+                    if (parent && !parent.querySelector('.fallback-text')) {
+                      const textEl = document.createElement('span');
+                      textEl.className = 'fallback-text text-[10px] font-bold text-muted-foreground uppercase font-heading';
+                      textEl.innerText = skill.short;
+                      parent.appendChild(textEl);
+                    }
+                  }}
+                />
               </div>
             ))}
           </div>
