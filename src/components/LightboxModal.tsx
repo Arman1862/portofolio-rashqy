@@ -52,11 +52,11 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
 
             {/* Media Area (Left side) */}
             <div className={`w-full md:w-[65%] bg-black flex items-center justify-center relative ${
-              work.category === "film" || work.category === "editing"
+              work.videoUrl
                 ? "aspect-video"
                 : "aspect-video md:aspect-auto md:h-full min-h-[250px] md:min-h-[450px]"
             }`}>
-              {(work.category === "film" || work.category === "editing") && work.videoUrl ? (
+              {work.videoUrl ? (
                 <iframe
                   src={work.videoUrl}
                   title={work.title}
