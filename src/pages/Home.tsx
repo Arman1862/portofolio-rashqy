@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, ExternalLink, Calendar, Film, Volume2, Lock } from "lucide-react";
 import { motion } from "framer-motion";
@@ -101,19 +101,94 @@ export default function Home() {
   const navigate = useNavigate();
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
   const [activeTimelineId, setActiveTimelineId] = useState<number>(1);
+  const [playheadPercent, setPlayheadPercent] = useState<number>(37.5);
+  const [isDraggingPlayhead, setIsDraggingPlayhead] = useState(false);
+  const timelineContainerRef = useRef<HTMLDivElement>(null);
 
   const activeEvent = timelineEvents.find((e) => e.id === activeTimelineId) || timelineEvents[0];
 
-  const getPlayheadPosition = () => {
-    switch (activeTimelineId) {
-      case 1: return "37.5%"; // Spans 2023-2025, center around 2024
-      case 2: return "62.5%"; // 2025
-      case 3: return "62.5%"; // 2025
-      case 4: return "62.5%"; // 2025
-      case 5: return "87.5%"; // 2026
-      case 6: return "87.5%"; // 2026
-      default: return "12.5%";
+  const handleSelectClip = (id: number) => {
+    setActiveTimelineId(id);
+    switch (id) {
+      case 1:
+        setPlayheadPercent(37.5); // Spans 2023-2025, center around 2024
+        break;
+      case 2:
+      case 3:
+      case 4:
+        setPlayheadPercent(62.5); // 2025 center
+        break;
+      case 5:
+      case 6:
+        setPlayheadPercent(87.5); // 2026 center
+        break;
     }
+  };
+
+  const getProjectForPercent = (percent: number, currentActiveId: number): number => {
+    if (percent < 25) {
+      return 1; // School Event (2023)
+    } else if (percent < 50) {
+      return 1; // School Event (2024)
+    } else if (percent < 75) {
+      // 2025. Keep current if already in 2025.
+      if ([1, 2, 3, 4].includes(currentActiveId)) {
+        return currentActiveId;
+      }
+      return 3; // Default 2025: BTS - Pesta Pora
+    } else {
+      // 2026. Keep current if already in 2026.
+      if ([5, 6].includes(currentActiveId)) {
+        return currentActiveId;
+      }
+      return 5; // Default 2026: Teman Tegar Maira
+    }
+  };
+
+  const handleTimelineInteraction = (clientX: number) => {
+    if (!timelineContainerRef.current) return;
+    const rect = timelineContainerRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    let percent = (x / rect.width) * 100;
+    percent = Math.max(0, Math.min(100, percent));
+    setPlayheadPercent(percent);
+    setActiveTimelineId((prev) => getProjectForPercent(percent, prev));
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDraggingPlayhead(true);
+    handleTimelineInteraction(e.clientX);
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      handleTimelineInteraction(moveEvent.clientX);
+    };
+
+    const handleMouseUp = () => {
+      setIsDraggingPlayhead(false);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDraggingPlayhead(true);
+    handleTimelineInteraction(e.touches[0].clientX);
+
+    const handleTouchMove = (moveEvent: TouchEvent) => {
+      handleTimelineInteraction(moveEvent.touches[0].clientX);
+    };
+
+    const handleTouchEnd = () => {
+      setIsDraggingPlayhead(false);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("touchend", handleTouchEnd);
   };
 
   // Play the first video as showreel mockup
@@ -331,7 +406,12 @@ export default function Home() {
                     <div className="min-w-[400px] sm:min-w-0 sm:w-full relative">
                       
                       {/* Timeline Ruler */}
-                      <div className="h-8 border-b border-white/5 grid grid-cols-4 w-full bg-neutral-950/40 text-[9px] sm:text-[10px] font-mono text-gray-500 select-none">
+                      <div 
+                        ref={timelineContainerRef}
+                        onMouseDown={handleMouseDown}
+                        onTouchStart={handleTouchStart}
+                        className="h-8 border-b border-white/5 grid grid-cols-4 w-full bg-neutral-950/40 text-[9px] sm:text-[10px] font-mono text-gray-500 select-none cursor-ew-resize relative"
+                      >
                         <div className="border-r border-white/5 flex items-center px-2 py-1 select-none">2023</div>
                         <div className="border-r border-white/5 flex items-center px-2 py-1 select-none">2024</div>
                         <div className="border-r border-white/5 flex items-center px-2 py-1 select-none">2025</div>
@@ -340,8 +420,8 @@ export default function Home() {
 
                       {/* Playhead Indicator (Red vertical line) */}
                       <motion.div
-                        animate={{ left: getPlayheadPosition() }}
-                        transition={{ type: "spring", stiffness: 120, damping: 15 }}
+                        animate={{ left: `${playheadPercent}%` }}
+                        transition={isDraggingPlayhead ? { duration: 0 } : { type: "spring", stiffness: 120, damping: 15 }}
                         className="absolute top-0 bottom-0 w-[2px] bg-red-500/60 z-20 pointer-events-none"
                       >
                         <div className="absolute -top-1 -left-[4px] w-2.5 h-2.5 bg-red-500 rotate-45 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
@@ -355,7 +435,7 @@ export default function Home() {
                           {/* Col 3: BTS */}
                           <div className="col-start-3 p-1 h-full">
                             <button
-                              onClick={() => setActiveTimelineId(3)}
+                              onClick={() => handleSelectClip(3)}
                               className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 3
                                   ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
@@ -371,7 +451,7 @@ export default function Home() {
                           {/* Col 4: Travel Documentation */}
                           <div className="col-start-4 p-1 h-full">
                             <button
-                              onClick={() => setActiveTimelineId(6)}
+                              onClick={() => handleSelectClip(6)}
                               className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 6
                                   ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
@@ -392,7 +472,7 @@ export default function Home() {
                           {/* Col 1-3: School Event Documentation */}
                           <div className="col-start-1 col-span-3 p-1 h-full">
                             <button
-                              onClick={() => setActiveTimelineId(1)}
+                              onClick={() => handleSelectClip(1)}
                               className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 1
                                   ? "bg-blue-500/30 border border-blue-500 text-blue-200 shadow-[0_0_12px_rgba(59,130,246,0.3)] scale-[0.98]"
@@ -406,7 +486,7 @@ export default function Home() {
                           {/* Col 4: Teman Tegar Maira */}
                           <div className="col-start-4 p-1 h-full">
                             <button
-                              onClick={() => setActiveTimelineId(5)}
+                              onClick={() => handleSelectClip(5)}
                               className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 5
                                   ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
@@ -426,7 +506,7 @@ export default function Home() {
                           {/* Col 3: Lokakarya Placemaker */}
                           <div className="col-start-3 p-1 h-full">
                             <button
-                              onClick={() => setActiveTimelineId(2)}
+                              onClick={() => handleSelectClip(2)}
                               className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 2
                                   ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
@@ -446,7 +526,7 @@ export default function Home() {
                           {/* Col 3: SINILAH Batch #3 */}
                           <div className="col-start-3 p-1 h-full">
                             <button
-                              onClick={() => setActiveTimelineId(4)}
+                              onClick={() => handleSelectClip(4)}
                               className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 4
                                   ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
