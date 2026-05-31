@@ -20,10 +20,10 @@ export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
       {/* Background Image with Gradient Overlay */}
       <div className="absolute inset-0 z-0 w-full h-full overflow-hidden select-none pointer-events-none">
         <img 
-          src="/assets/Rashqy-WIZED00-24.webp" 
+          src="/assets/rasqhy-bg-hero.webp" 
           alt="Rasqhy Background" 
-          className="absolute right-0 top-0 w-full md:w-[55%] h-full object-cover opacity-60 md:opacity-85 transition-opacity duration-1000"
-          style={{ objectPosition: 'center' }}
+          className="absolute right-0 top-0 w-full md:w-[50%] lg:w-[45%] h-full object-cover opacity-45 md:opacity-75 transition-opacity duration-1000"
+          style={{ objectPosition: 'right center' }}
           loading="eager"
         />
         {/* Custom multi-stop cubic gradient easing for seamless background blend */}
