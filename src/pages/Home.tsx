@@ -189,7 +189,7 @@ export default function Home() {
         <div className="absolute top-1/4 left-1/4 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-blue-600/5 blur-[100px] md:blur-[150px] pointer-events-none -z-10" />
         <div className="absolute bottom-1/4 right-1/4 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-purple-600/5 blur-[100px] md:blur-[150px] pointer-events-none -z-10" />
 
-        <div className="max-w-6xl mx-auto space-y-16">
+        <div className="max-w-7xl xl:max-w-[1440px] mx-auto space-y-16">
           {/* Header */}
           <div className="text-center space-y-4">
             <span className="text-xs font-semibold tracking-[0.2em] text-blue-500 uppercase">Chronology</span>
