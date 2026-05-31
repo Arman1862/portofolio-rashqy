@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Film, Camera, Play, Grid, ArrowLeft, Scissors } from "lucide-react";
 import { works } from "../data/works";
 import LightboxModal from "../components/LightboxModal";
+import ImageWithLoader from "../components/ImageWithLoader";
 import type { WorkItem } from "../data/works";
 
 export default function WorksPage() {
@@ -220,9 +221,10 @@ export default function WorksPage() {
                 className="break-inside-avoid flex flex-col space-y-3 mb-6 group cursor-pointer"
               >
                 <div className="relative w-full rounded-xl overflow-hidden bg-neutral-900 border border-white/5">
-                  <img
+                  <ImageWithLoader
                     src={work.thumbnail}
                     alt={work.title}
+                    aspectRatioClass="aspect-auto border-0 rounded-none bg-transparent"
                     className="w-full h-auto object-cover transform transition-transform duration-700 ease-out group-hover:scale-105"
                     loading="lazy"
                   />

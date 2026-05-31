@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, Grid } from "lucide-react";
 import { works } from "../data/works";
+import ImageWithLoader from "./ImageWithLoader";
 import type { WorkItem } from "../data/works";
 
 interface GalleryProps {
@@ -98,9 +99,10 @@ export default function Gallery({ selectedCategory, onSelectWork }: GalleryProps
                 >
                   {/* Card Thumbnail Frame */}
                   <div className="relative aspect-[16:9] w-full rounded-xl overflow-hidden bg-neutral-900 border border-white/5">
-                    <img
+                    <ImageWithLoader
                       src={work.thumbnail}
                       alt={work.title}
+                      aspectRatioClass="aspect-video border-0 rounded-none bg-transparent"
                       className="object-cover w-full h-full transform transition-transform duration-700 ease-out group-hover:scale-105"
                       loading="lazy"
                     />
