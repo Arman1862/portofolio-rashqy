@@ -22,11 +22,16 @@ export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
         <img 
           src="/assets/Rashqy-WIZED00-24.webp" 
           alt="Rasqhy Background" 
-          className="absolute right-0 top-0 w-full md:w-[60%] h-full object-cover object-center opacity-60 md:opacity-75 transition-opacity duration-1000"
+          className="absolute right-0 top-0 w-full h-full object-cover object-center opacity-50 md:opacity-65 transition-opacity duration-1000"
           loading="eager"
         />
-        {/* Gradient Overlay from left to right for text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/90 md:via-[#080808]/45 to-transparent" />
+        {/* Custom multi-stop cubic gradient easing for seamless background blend */}
+        <div 
+          className="absolute inset-0" 
+          style={{
+            background: 'linear-gradient(to right, #080808 0%, #080808 30%, rgba(8, 8, 8, 0.92) 45%, rgba(8, 8, 8, 0.6) 60%, rgba(8, 8, 8, 0.2) 80%, transparent 100%)'
+          }}
+        />
         {/* Mobile dimming overlay */}
         <div className="absolute inset-0 bg-black/10 md:bg-transparent" />
         {/* Bottom blend transition to next section */}
