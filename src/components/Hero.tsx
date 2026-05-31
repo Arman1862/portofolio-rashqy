@@ -22,8 +22,7 @@ export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
         <img 
           src="/assets/rasqhy-bg-hero.webp" 
           alt="Rasqhy Background" 
-          className="absolute right-0 top-0 w-full md:w-[50%] lg:w-[45%] h-full object-cover opacity-45 md:opacity-75 transition-opacity duration-1000"
-          style={{ objectPosition: 'right center' }}
+          className="absolute right-0 top-0 w-full md:w-[48%] lg:w-[42%] h-full object-cover opacity-45 md:opacity-75 transition-opacity duration-1000 object-[68%_center] md:object-[72%_center]"
           loading="eager"
         />
         {/* Custom multi-stop cubic gradient easing for seamless background blend */}
