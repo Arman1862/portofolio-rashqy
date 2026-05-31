@@ -48,7 +48,7 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 p-2 rounded-full bg-black/60 border border-white/10 hover:border-white/30 text-white cursor-pointer transition-all duration-300 z-20"
+              className="absolute top-4 left-4 md:left-auto md:right-4 p-2 rounded-full bg-black/60 border border-white/10 hover:border-white/30 text-white cursor-pointer transition-all duration-300 z-20"
             >
               <X size={18} />
             </button>
@@ -58,7 +58,7 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
               isYouTube
                 ? "aspect-video"
                 : isDriveVideo
-                  ? "aspect-video min-h-[245px] md:aspect-auto md:h-full md:min-h-[450px]"
+                  ? "aspect-[4/3] md:aspect-auto md:h-full md:min-h-[450px]"
                   : "aspect-video md:aspect-auto md:h-full min-h-[250px] md:min-h-[450px]"
             }`}>
               {work.videoUrl ? (
