@@ -9,6 +9,9 @@ interface LightboxModalProps {
 }
 
 export default function LightboxModal({ work, onClose }: LightboxModalProps) {
+  const isYouTube = work?.videoUrl?.includes("youtube.com") || work?.videoUrl?.includes("youtu.be");
+  const isDriveVideo = work?.videoUrl?.includes("drive.google.com");
+
   // Disable body scroll when modal is open
   useEffect(() => {
     if (work) {
@@ -52,9 +55,11 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
 
             {/* Media Area (Left side) */}
             <div className={`w-full md:w-[65%] bg-black flex items-center justify-center relative ${
-              work.videoUrl
+              isYouTube
                 ? "aspect-video"
-                : "aspect-video md:aspect-auto md:h-full min-h-[250px] md:min-h-[450px]"
+                : isDriveVideo
+                  ? "aspect-video min-h-[245px] md:aspect-auto md:h-full md:min-h-[450px]"
+                  : "aspect-video md:aspect-auto md:h-full min-h-[250px] md:min-h-[450px]"
             }`}>
               {work.videoUrl ? (
                 <iframe
