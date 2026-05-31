@@ -22,14 +22,15 @@ export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
         <img 
           src="/assets/Rashqy-WIZED00-24.webp" 
           alt="Rasqhy Background" 
-          className="absolute right-0 top-0 w-full h-full object-cover object-right md:object-[90%_center] opacity-50 md:opacity-65 transition-opacity duration-1000"
+          className="absolute right-0 top-0 w-full md:w-[55%] h-full object-cover opacity-60 md:opacity-85 transition-opacity duration-1000"
+          style={{ objectPosition: 'center' }}
           loading="eager"
         />
         {/* Custom multi-stop cubic gradient easing for seamless background blend */}
         <div 
           className="absolute inset-0" 
           style={{
-            background: 'linear-gradient(to right, #080808 0%, #080808 30%, rgba(8, 8, 8, 0.92) 45%, rgba(8, 8, 8, 0.6) 60%, rgba(8, 8, 8, 0.2) 80%, transparent 100%)'
+            background: 'linear-gradient(to right, #080808 0%, #080808 40%, rgba(8, 8, 8, 0.95) 50%, rgba(8, 8, 8, 0.6) 60%, rgba(8, 8, 8, 0.15) 70%, transparent 80%)'
           }}
         />
         {/* Mobile dimming overlay */}
