@@ -199,12 +199,12 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Interactive Workspace Panel */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Interactive Workspace Panel - Stacked Layout */}
+          <div className="space-y-8 md:space-y-12">
             
-            {/* Left: Program Monitor (Preview Screen) - spans 5 columns on desktop */}
-            <div className="lg:col-span-5 flex flex-col h-full justify-center">
-              <div className="w-full aspect-video md:aspect-[4/3] lg:aspect-square rounded-2xl bg-neutral-950/80 border border-white/5 p-6 md:p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl shadow-black/80 backdrop-blur-xl">
+            {/* Top: Program Monitor (Preview Screen) - Centered, comfortable reading width */}
+            <div className="w-full max-w-3xl mx-auto">
+              <div className="w-full aspect-video md:aspect-[21/9] rounded-2xl bg-neutral-950/80 border border-white/5 p-6 md:p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl shadow-black/80 backdrop-blur-xl">
                 
                 {/* Viewport pulsers / decorative grid */}
                 <div className="absolute inset-0 bg-dot-pattern opacity-10 pointer-events-none" />
@@ -215,7 +215,7 @@ export default function Home() {
                     activeEvent.color === "blue" ? "bg-blue-500/40" : activeEvent.color === "amber" ? "bg-amber-500/40" : "bg-purple-500/40"
                   }`} />
                   <div className="absolute w-24 h-24 rounded-full border border-white/5 flex items-center justify-center animate-spin" style={{ animationDuration: '30s' }}>
-                    <div className="w-1 h-1 rounded-full bg-white/40 absolute top-0" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-white/40 absolute top-0" />
                   </div>
                 </div>
 
@@ -231,7 +231,7 @@ export default function Home() {
                 </div>
 
                 {/* Main Viewport details */}
-                <div className="space-y-4 z-10 pt-8 lg:pt-16">
+                <div className="space-y-3 z-10 pt-4 md:pt-6">
                   {/* Period Tag */}
                   <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider border font-sans uppercase ${activeEvent.colorClass}`}>
                     <Calendar size={8} />
@@ -258,27 +258,27 @@ export default function Home() {
                 </div>
 
                 {/* Viewport Bottom Controls Mock */}
-                <div className="pt-4 border-t border-white/5 flex justify-between items-center text-[8px] font-mono text-gray-500 z-10 mt-6 select-none">
+                <div className="pt-3 border-t border-white/5 flex justify-between items-center text-[8px] font-mono text-gray-500 z-10 mt-4 select-none">
                   <span>RES: 1920 x 1080</span>
                   <span>FPS: 23.976</span>
                 </div>
               </div>
             </div>
 
-            {/* Right: Timeline Panel (Resolve/Premiere mockup) - spans 7 columns */}
-            <div className="lg:col-span-7 flex flex-col justify-center">
+            {/* Bottom: Timeline Panel (Resolve/Premiere mockup) - Spans full width for maximum readability */}
+            <div className="w-full">
               <div className="w-full rounded-2xl bg-neutral-950/80 border border-white/5 overflow-hidden shadow-2xl backdrop-blur-xl flex flex-col">
                 
                 {/* Timeline Header (Workspace name & Mini transport controls) */}
-                <div className="bg-neutral-900/60 px-4 py-3 border-b border-white/5 flex items-center justify-between select-none">
+                <div className="bg-neutral-900/60 px-5 py-3.5 border-b border-white/5 flex items-center justify-between select-none">
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-bold tracking-wider font-sans text-white uppercase">SEQUENCE TIMELINE</span>
-                    <span className="text-[8px] font-mono px-1.5 py-0.5 bg-neutral-950 rounded text-gray-500">v1.0</span>
+                    <span className="text-[8px] font-mono px-1.5 py-0.5 bg-neutral-950 rounded text-gray-500 font-semibold">v1.0</span>
                   </div>
                   {/* Mock Transport icons */}
-                  <div className="flex items-center gap-2 text-gray-500">
+                  <div className="flex items-center gap-3 text-gray-500 text-xs">
                     <button className="hover:text-white transition-colors duration-200 cursor-default">◀◀</button>
-                    <button className="hover:text-white transition-colors duration-200 cursor-default">▶</button>
+                    <button className="hover:text-white transition-colors duration-200 cursor-default font-bold">▶</button>
                     <button className="hover:text-white transition-colors duration-200 cursor-default">▶▶</button>
                   </div>
                 </div>
@@ -287,55 +287,55 @@ export default function Home() {
                 <div className="flex flex-row">
                   
                   {/* Left Column: Track Control Headers */}
-                  <div className="w-20 md:w-28 flex flex-col pt-8 bg-neutral-950/60 border-r border-white/5 font-mono text-[9px] font-semibold text-gray-500 divide-y divide-white/5 select-none">
+                  <div className="w-24 md:w-32 flex flex-col pt-10 bg-neutral-950/60 border-r border-white/5 font-mono text-[9px] font-semibold text-gray-500 divide-y divide-white/5 select-none">
                     {/* Track V2 */}
-                    <div className="h-14 flex flex-col justify-center px-2 md:px-3 space-y-1 bg-neutral-950/20">
-                      <span className="text-white font-bold flex items-center gap-1"><Film size={10} className="text-amber-400" /> V2: BTS</span>
-                      <div className="flex gap-1 text-[8px]">
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 text-amber-500/50 hover:text-amber-400 cursor-pointer">S</span>
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
+                    <div className="h-16 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
+                      <span className="text-white font-bold flex items-center gap-1.5"><Film size={11} className="text-amber-400" /> V2: BTS</span>
+                      <div className="flex gap-1.5 text-[8px]">
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-amber-500/50 hover:text-amber-400 cursor-pointer">S</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
                       </div>
                     </div>
                     {/* Track V1 */}
-                    <div className="h-14 flex flex-col justify-center px-2 md:px-3 space-y-1 bg-neutral-950/20">
-                      <span className="text-white font-bold flex items-center gap-1"><Film size={10} className="text-blue-400" /> V1: MAIN</span>
-                      <div className="flex gap-1 text-[8px]">
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 text-blue-500/50 hover:text-blue-400 cursor-pointer">S</span>
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
+                    <div className="h-16 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
+                      <span className="text-white font-bold flex items-center gap-1.5"><Film size={11} className="text-blue-400" /> V1: MAIN</span>
+                      <div className="flex gap-1.5 text-[8px]">
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-blue-500/50 hover:text-blue-400 cursor-pointer">S</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
                       </div>
                     </div>
                     {/* Track A1 */}
-                    <div className="h-14 flex flex-col justify-center px-2 md:px-3 space-y-1 bg-neutral-950/20">
-                      <span className="text-white font-bold flex items-center gap-1"><Volume2 size={10} className="text-amber-400" /> A1: AUD</span>
-                      <div className="flex gap-1 text-[8px]">
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-green-400 cursor-pointer">S</span>
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
+                    <div className="h-16 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
+                      <span className="text-white font-bold flex items-center gap-1.5"><Volume2 size={11} className="text-amber-400" /> A1: AUD</span>
+                      <div className="flex gap-1.5 text-[8px]">
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-green-400 cursor-pointer">S</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
                       </div>
                     </div>
                     {/* Track A2 */}
-                    <div className="h-14 flex flex-col justify-center px-2 md:px-3 space-y-1 bg-neutral-950/20">
-                      <span className="text-white font-bold flex items-center gap-1"><Volume2 size={10} className="text-amber-400" /> A2: DIA</span>
-                      <div className="flex gap-1 text-[8px]">
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-green-400 cursor-pointer">S</span>
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
-                        <span className="px-1 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
+                    <div className="h-16 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
+                      <span className="text-white font-bold flex items-center gap-1.5"><Volume2 size={11} className="text-amber-400" /> A2: DIA</span>
+                      <div className="flex gap-1.5 text-[8px]">
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-green-400 cursor-pointer">S</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
                       </div>
                     </div>
                   </div>
 
                   {/* Right Column: Scrollable Tracks & Timeline ruler */}
                   <div className="flex-1 overflow-x-auto relative select-none">
-                    <div className="min-w-[600px] md:min-w-full relative">
+                    <div className="min-w-[800px] md:min-w-full relative">
                       
                       {/* Timeline Ruler */}
-                      <div className="h-8 border-b border-white/5 grid grid-cols-4 w-full bg-neutral-950/40 text-[9px] font-mono text-gray-500 select-none">
-                        <div className="border-r border-white/5 flex items-end p-1 select-none">2023</div>
-                        <div className="border-r border-white/5 flex items-end p-1 select-none">2024</div>
-                        <div className="border-r border-white/5 flex items-end p-1 select-none">2025</div>
-                        <div className="flex items-end p-1 select-none">2026</div>
+                      <div className="h-10 border-b border-white/5 grid grid-cols-4 w-full bg-neutral-950/40 text-[10px] font-mono text-gray-500 select-none">
+                        <div className="border-r border-white/5 flex items-end p-2 select-none">2023</div>
+                        <div className="border-r border-white/5 flex items-end p-2 select-none">2024</div>
+                        <div className="border-r border-white/5 flex items-end p-2 select-none">2025</div>
+                        <div className="flex items-end p-2 select-none">2026</div>
                       </div>
 
                       {/* Playhead Indicator (Red vertical line) */}
@@ -351,101 +351,101 @@ export default function Home() {
                       <div className="divide-y divide-white/5 select-none relative">
                         
                         {/* Track V2 */}
-                        <div className="grid grid-cols-4 w-full h-14 relative bg-neutral-950/10">
+                        <div className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/10">
                           {/* Col 3: BTS */}
-                          <div className="col-start-3 p-1.5 h-full">
+                          <div className="col-start-3 p-2 h-full">
                             <button
                               onClick={() => setActiveTimelineId(3)}
-                              className={`w-full h-full rounded-xl px-3 text-left flex flex-col justify-center transition-all cursor-pointer ${
+                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 3
                                   ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
                                   : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
                               }`}
                             >
-                              <span className="text-[10px] font-bold truncate">BTS - Pesta Pora</span>
-                              <span className="text-[8px] opacity-60 font-mono">2025</span>
+                              <span className="text-[11px] font-bold truncate">BTS - Pesta Pora</span>
+                              <span className="text-[9px] opacity-60 font-mono">2025</span>
                             </button>
                           </div>
                           {/* Col 4: Travel Documentation */}
-                          <div className="col-start-4 p-1.5 h-full">
+                          <div className="col-start-4 p-2 h-full">
                             <button
                               onClick={() => setActiveTimelineId(6)}
-                              className={`w-full h-full rounded-xl px-3 text-left flex flex-col justify-center transition-all cursor-pointer ${
+                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 6
                                   ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
                                   : "bg-purple-950/20 border border-purple-500/10 text-purple-400 hover:bg-purple-950/30"
                               }`}
                             >
-                              <span className="text-[10px] font-bold truncate">Travel - Tunas Harapan</span>
-                              <span className="text-[8px] opacity-60 font-mono">2026</span>
+                              <span className="text-[11px] font-bold truncate">Travel - Tunas Harapan</span>
+                              <span className="text-[9px] opacity-60 font-mono">2026</span>
                             </button>
                           </div>
                         </div>
 
                         {/* Track V1 */}
-                        <div className="grid grid-cols-4 w-full h-14 relative bg-neutral-950/10">
+                        <div className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/10">
                           {/* Col 1-3: School Event Documentation */}
-                          <div className="col-start-1 col-span-3 p-1.5 h-full">
+                          <div className="col-start-1 col-span-3 p-2 h-full">
                             <button
                               onClick={() => setActiveTimelineId(1)}
-                              className={`w-full h-full rounded-xl px-3 text-left flex flex-col justify-center transition-all cursor-pointer ${
+                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 1
                                   ? "bg-blue-500/30 border border-blue-500 text-blue-200 shadow-[0_0_12px_rgba(59,130,246,0.3)] scale-[0.98]"
                                   : "bg-blue-950/20 border border-blue-500/10 text-blue-400 hover:bg-blue-950/30"
                               }`}
                             >
-                              <span className="text-[10px] font-bold truncate">School Event Documentation</span>
-                              <span className="text-[8px] opacity-60 font-mono">2023 - 2025</span>
+                              <span className="text-[11px] font-bold truncate">School Event Documentation</span>
+                              <span className="text-[9px] opacity-60 font-mono">2023 - 2025</span>
                             </button>
                           </div>
                           {/* Col 4: Teman Tegar Maira */}
-                          <div className="col-start-4 p-1.5 h-full">
+                          <div className="col-start-4 p-2 h-full">
                             <button
                               onClick={() => setActiveTimelineId(5)}
-                              className={`w-full h-full rounded-xl px-3 text-left flex flex-col justify-center transition-all cursor-pointer ${
+                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 5
                                   ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
                                   : "bg-purple-950/20 border border-purple-500/10 text-purple-400 hover:bg-purple-950/30"
                               }`}
                             >
-                              <span className="text-[10px] font-bold truncate">Teman Tegar Maira</span>
-                              <span className="text-[8px] opacity-60 font-mono">2026</span>
+                              <span className="text-[11px] font-bold truncate">Teman Tegar Maira</span>
+                              <span className="text-[9px] opacity-60 font-mono">2026</span>
                             </button>
                           </div>
                         </div>
 
                         {/* Track A1 */}
-                        <div className="grid grid-cols-4 w-full h-14 relative bg-neutral-950/10">
+                        <div className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/10">
                           {/* Col 3: Lokakarya Placemaker */}
-                          <div className="col-start-3 p-1.5 h-full">
+                          <div className="col-start-3 p-2 h-full">
                             <button
                               onClick={() => setActiveTimelineId(2)}
-                              className={`w-full h-full rounded-xl px-3 text-left flex flex-col justify-center transition-all cursor-pointer ${
+                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 2
                                   ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
                                   : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
                               }`}
                             >
-                              <span className="text-[10px] font-bold truncate">Placemaker Muda</span>
-                              <span className="text-[8px] opacity-60 font-mono">2025</span>
+                              <span className="text-[11px] font-bold truncate">Placemaker Muda</span>
+                              <span className="text-[9px] opacity-60 font-mono">2025</span>
                             </button>
                           </div>
                         </div>
 
                         {/* Track A2 */}
-                        <div className="grid grid-cols-4 w-full h-14 relative bg-neutral-950/10">
+                        <div className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/10">
                           {/* Col 3: SINILAH Batch #3 */}
-                          <div className="col-start-3 p-1.5 h-full">
+                          <div className="col-start-3 p-2 h-full">
                             <button
                               onClick={() => setActiveTimelineId(4)}
-                              className={`w-full h-full rounded-xl px-3 text-left flex flex-col justify-center transition-all cursor-pointer ${
+                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
                                 activeTimelineId === 4
                                   ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
                                   : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
                               }`}
                             >
-                              <span className="text-[10px] font-bold truncate">SINILAH Batch #3</span>
-                              <span className="text-[8px] opacity-60 font-mono">2025</span>
+                              <span className="text-[11px] font-bold truncate">SINILAH Batch #3</span>
+                              <span className="text-[9px] opacity-60 font-mono">2025</span>
                             </button>
                           </div>
                         </div>
