@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mail, ExternalLink, Calendar, Film, Scissors, Camera, Lock } from "lucide-react";
+import { Mail, ExternalLink, Calendar, Film, Volume2, Lock } from "lucide-react";
 import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import CategorySplit from "../components/CategorySplit";
@@ -105,8 +105,15 @@ export default function Home() {
   const activeEvent = timelineEvents.find((e) => e.id === activeTimelineId) || timelineEvents[0];
 
   const getPlayheadPosition = () => {
-    // 6 columns in total. Center of each column is calculated by ((col_index * 2) + 1) * (100 / 12)
-    return `${((activeTimelineId - 1) * 2 + 1) * (100 / 12)}%`;
+    switch (activeTimelineId) {
+      case 1: return "37.5%"; // Spans 2023-2025, center around 2024
+      case 2: return "62.5%"; // 2025
+      case 3: return "62.5%"; // 2025
+      case 4: return "62.5%"; // 2025
+      case 5: return "87.5%"; // 2026
+      case 6: return "87.5%"; // 2026
+      default: return "12.5%";
+    }
   };
 
   // Play the first video as showreel mockup
@@ -280,30 +287,39 @@ export default function Home() {
                 <div className="flex flex-row">
                   
                   {/* Left Column: Track Control Headers */}
-                  <div className="w-24 md:w-32 flex flex-col pt-12 bg-neutral-950/60 border-r border-white/5 font-mono text-[9px] font-semibold text-gray-500 divide-y divide-white/5 select-none">
-                    {/* Track V2: Films */}
-                    <div className="h-20 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
-                      <span className="text-white font-bold flex items-center gap-1.5"><Film size={11} className="text-blue-400" /> V2: FILMS</span>
-                      <div className="flex gap-1.5 text-[8px]">
-                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-blue-500/50 hover:text-blue-400 cursor-pointer">S</span>
-                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
-                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
-                      </div>
-                    </div>
-                    {/* Track V1: Editing */}
-                    <div className="h-20 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
-                      <span className="text-white font-bold flex items-center gap-1.5"><Scissors size={11} className="text-amber-400" /> V1: EDITING</span>
+                  <div className="w-24 md:w-32 flex flex-col pt-10 bg-neutral-950/60 border-r border-white/5 font-mono text-[9px] font-semibold text-gray-500 divide-y divide-white/5 select-none">
+                    {/* Track V2 */}
+                    <div className="h-16 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
+                      <span className="text-white font-bold flex items-center gap-1.5"><Film size={11} className="text-amber-400" /> V2: BTS</span>
                       <div className="flex gap-1.5 text-[8px]">
                         <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-amber-500/50 hover:text-amber-400 cursor-pointer">S</span>
                         <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
                         <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
                       </div>
                     </div>
-                    {/* Track A1: Photos */}
-                    <div className="h-20 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
-                      <span className="text-white font-bold flex items-center gap-1.5"><Camera size={11} className="text-purple-400" /> A1: PHOTOS</span>
+                    {/* Track V1 */}
+                    <div className="h-16 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
+                      <span className="text-white font-bold flex items-center gap-1.5"><Film size={11} className="text-blue-400" /> V1: MAIN</span>
                       <div className="flex gap-1.5 text-[8px]">
-                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-purple-500/50 hover:text-purple-400 cursor-pointer">S</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-blue-500/50 hover:text-blue-400 cursor-pointer">S</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
+                      </div>
+                    </div>
+                    {/* Track A1 */}
+                    <div className="h-16 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
+                      <span className="text-white font-bold flex items-center gap-1.5"><Volume2 size={11} className="text-amber-400" /> A1: AUD</span>
+                      <div className="flex gap-1.5 text-[8px]">
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-green-400 cursor-pointer">S</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
+                      </div>
+                    </div>
+                    {/* Track A2 */}
+                    <div className="h-16 flex flex-col justify-center px-3 space-y-1.5 bg-neutral-950/20">
+                      <span className="text-white font-bold flex items-center gap-1.5"><Volume2 size={11} className="text-amber-400" /> A2: DIA</span>
+                      <div className="flex gap-1.5 text-[8px]">
+                        <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-green-400 cursor-pointer">S</span>
                         <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-red-400 cursor-pointer">M</span>
                         <span className="px-1.5 py-0.5 rounded bg-neutral-900 hover:text-white cursor-pointer"><Lock size={8} /></span>
                       </div>
@@ -315,31 +331,11 @@ export default function Home() {
                     <div className="min-w-[750px] lg:min-w-[850px] relative">
                       
                       {/* Timeline Ruler */}
-                      <div className="h-12 border-b border-white/5 grid grid-cols-6 w-full bg-neutral-950/40 text-[10px] font-mono text-gray-500 select-none">
-                        <div className="border-r border-white/5 flex flex-col justify-end p-2 select-none">
-                          <span className="text-gray-400 font-bold">00:23:00:00</span>
-                          <span className="text-[8px] text-gray-600">2023 - 2025</span>
-                        </div>
-                        <div className="border-r border-white/5 flex flex-col justify-end p-2 select-none">
-                          <span className="text-gray-400 font-bold">00:25:01:00</span>
-                          <span className="text-[8px] text-gray-600">2025</span>
-                        </div>
-                        <div className="border-r border-white/5 flex flex-col justify-end p-2 select-none">
-                          <span className="text-gray-400 font-bold">00:25:02:00</span>
-                          <span className="text-[8px] text-gray-600">2025</span>
-                        </div>
-                        <div className="border-r border-white/5 flex flex-col justify-end p-2 select-none">
-                          <span className="text-gray-400 font-bold">00:25:03:00</span>
-                          <span className="text-[8px] text-gray-600">2025</span>
-                        </div>
-                        <div className="border-r border-white/5 flex flex-col justify-end p-2 select-none">
-                          <span className="text-gray-400 font-bold">00:26:01:00</span>
-                          <span className="text-[8px] text-gray-600">2026</span>
-                        </div>
-                        <div className="flex flex-col justify-end p-2 select-none">
-                          <span className="text-gray-400 font-bold">00:26:02:00</span>
-                          <span className="text-[8px] text-gray-600">2026</span>
-                        </div>
+                      <div className="h-10 border-b border-white/5 grid grid-cols-4 w-full bg-neutral-950/40 text-[10px] font-mono text-gray-500 select-none">
+                        <div className="border-r border-white/5 flex items-end p-2 select-none">2023</div>
+                        <div className="border-r border-white/5 flex items-end p-2 select-none">2024</div>
+                        <div className="border-r border-white/5 flex items-end p-2 select-none">2025</div>
+                        <div className="flex items-end p-2 select-none">2026</div>
                       </div>
 
                       {/* Playhead Indicator (Red vertical line) */}
@@ -354,41 +350,9 @@ export default function Home() {
                       {/* Timeline Clips Area */}
                       <div className="divide-y divide-white/5 select-none relative">
                         
-                        {/* Track V2: Films */}
-                        <div className="grid grid-cols-6 w-full h-20 relative bg-neutral-950/10">
-                          {/* Col 1: School Event Documentation */}
-                          <div className="col-start-1 p-2 h-full">
-                            <button
-                              onClick={() => setActiveTimelineId(1)}
-                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 1
-                                  ? "bg-blue-500/30 border border-blue-500 text-blue-200 shadow-[0_0_12px_rgba(59,130,246,0.3)] scale-[0.98]"
-                                  : "bg-blue-950/20 border border-blue-500/10 text-blue-400 hover:bg-blue-950/30"
-                              }`}
-                            >
-                              <span className="text-[11px] font-bold truncate">School Event</span>
-                              <span className="text-[9px] opacity-60 font-mono">2023 - 2025</span>
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Track V1: Editing */}
-                        <div className="grid grid-cols-6 w-full h-20 relative bg-neutral-950/10">
-                          {/* Col 2: Lokakarya Placemaker */}
-                          <div className="col-start-2 p-2 h-full">
-                            <button
-                              onClick={() => setActiveTimelineId(2)}
-                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 2
-                                  ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
-                                  : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
-                              }`}
-                            >
-                              <span className="text-[11px] font-bold truncate">Placemaker Muda</span>
-                              <span className="text-[9px] opacity-60 font-mono">2025</span>
-                            </button>
-                          </div>
-                          {/* Col 3: BTS - Pesta Pora */}
+                        {/* Track V2 */}
+                        <div className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/10">
+                          {/* Col 3: BTS */}
                           <div className="col-start-3 p-2 h-full">
                             <button
                               onClick={() => setActiveTimelineId(3)}
@@ -402,26 +366,40 @@ export default function Home() {
                               <span className="text-[9px] opacity-60 font-mono">2025</span>
                             </button>
                           </div>
-                          {/* Col 4: SINILAH Batch #3 */}
+                          {/* Col 4: Travel Documentation */}
                           <div className="col-start-4 p-2 h-full">
                             <button
-                              onClick={() => setActiveTimelineId(4)}
+                              onClick={() => setActiveTimelineId(6)}
                               className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 4
-                                  ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
-                                  : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
+                                activeTimelineId === 6
+                                  ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
+                                  : "bg-purple-950/20 border border-purple-500/10 text-purple-400 hover:bg-purple-950/30"
                               }`}
                             >
-                              <span className="text-[11px] font-bold truncate">SINILAH Batch #3</span>
-                              <span className="text-[9px] opacity-60 font-mono">2025</span>
+                              <span className="text-[11px] font-bold truncate">Travel Documentation</span>
+                              <span className="text-[9px] opacity-60 font-mono">2026</span>
                             </button>
                           </div>
                         </div>
 
-                        {/* Track A1: Photos */}
-                        <div className="grid grid-cols-6 w-full h-20 relative bg-neutral-950/10">
-                          {/* Col 5: Teman Tegar Maira */}
-                          <div className="col-start-5 p-2 h-full">
+                        {/* Track V1 */}
+                        <div className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/10">
+                          {/* Col 1-3: School Event Documentation */}
+                          <div className="col-start-1 col-span-3 p-2 h-full">
+                            <button
+                              onClick={() => setActiveTimelineId(1)}
+                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
+                                activeTimelineId === 1
+                                  ? "bg-blue-500/30 border border-blue-500 text-blue-200 shadow-[0_0_12px_rgba(59,130,246,0.3)] scale-[0.98]"
+                                  : "bg-blue-950/20 border border-blue-500/10 text-blue-400 hover:bg-blue-950/30"
+                              }`}
+                            >
+                              <span className="text-[11px] font-bold truncate">School Event Documentation</span>
+                              <span className="text-[9px] opacity-60 font-mono">2023 - 2025</span>
+                            </button>
+                          </div>
+                          {/* Col 4: Teman Tegar Maira */}
+                          <div className="col-start-4 p-2 h-full">
                             <button
                               onClick={() => setActiveTimelineId(5)}
                               className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
@@ -434,18 +412,40 @@ export default function Home() {
                               <span className="text-[9px] opacity-60 font-mono">2026</span>
                             </button>
                           </div>
-                          {/* Col 6: Travel Documentation */}
-                          <div className="col-start-6 p-2 h-full">
+                        </div>
+
+                        {/* Track A1 */}
+                        <div className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/10">
+                          {/* Col 3: Lokakarya Placemaker */}
+                          <div className="col-start-3 p-2 h-full">
                             <button
-                              onClick={() => setActiveTimelineId(6)}
+                              onClick={() => setActiveTimelineId(2)}
                               className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 6
-                                  ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
-                                  : "bg-purple-950/20 border border-purple-500/10 text-purple-400 hover:bg-purple-950/30"
+                                activeTimelineId === 2
+                                  ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
+                                  : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
                               }`}
                             >
-                              <span className="text-[11px] font-bold truncate">Travel Documentation</span>
-                              <span className="text-[9px] opacity-60 font-mono">2026</span>
+                              <span className="text-[11px] font-bold truncate">Placemaker Muda</span>
+                              <span className="text-[9px] opacity-60 font-mono">2025</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Track A2 */}
+                        <div className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/10">
+                          {/* Col 3: SINILAH Batch #3 */}
+                          <div className="col-start-3 p-2 h-full">
+                            <button
+                              onClick={() => setActiveTimelineId(4)}
+                              className={`w-full h-full rounded-xl px-4 text-left flex flex-col justify-center transition-all cursor-pointer ${
+                                activeTimelineId === 4
+                                  ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
+                                  : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
+                              }`}
+                            >
+                              <span className="text-[11px] font-bold truncate">SINILAH Batch #3</span>
+                              <span className="text-[9px] opacity-60 font-mono">2025</span>
                             </button>
                           </div>
                         </div>
