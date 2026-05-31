@@ -12,12 +12,12 @@ export interface WorkItem {
 export const works: WorkItem[] = [
   {
     id: 1,
-    title: "Echoes of Silence",
+    title: "Video Angkatan - SMKN 53 Jakarta - 2026",
     category: "film",
-    role: "Director & Lead Editor",
-    thumbnail: "/assets/thumb_echoes.png",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    desc: "A cinematic short film exploring isolation in urban spaces. Captured with vintage lenses, featuring deep contrast and moody atmospheric color grading."
+    role: "Lead Videographer & Editor",
+    thumbnail: "/assets/thumb_horizon.png",
+    videoUrl: "https://drive.google.com/file/d/1bTVOwhB-oGvq0FXO9YgA2B1wf00GjrkU/preview",
+    desc: "Dokumentasi kebersamaan, momentum kelulusan, dan kenangan indah angkatan 2026 SMKN 53 Jakarta. Dikemas dengan sinematografi yang dinamis dan bercerita secara emosional."
   },
   {
     id: 2,
@@ -30,12 +30,12 @@ export const works: WorkItem[] = [
   },
   {
     id: 3,
-    title: "Beyond the Horizon",
+    title: "After Movie - SINILAH Batch #3 - 2025",
     category: "editing",
-    role: "Video Editor & Colorist",
-    thumbnail: "/assets/thumb_horizon.png",
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    desc: "An epic travel film detailing a solo journey through mountain ranges. Edited to emphasize slow camera sweeps, natural ambient soundscapes, and cinematic storytelling."
+    role: "Lead Video Editor",
+    thumbnail: "/assets/thumb_echoes.png",
+    videoUrl: "https://drive.google.com/file/d/1XDut5knVN0uBjvJE7WBiYdRxzV2w5HV1/preview",
+    desc: "After movie energik yang menangkap esensi dan keseruan dari acara SINILAH Batch #3 di tahun 2025. Dioptimalkan dengan transisi tempo cepat dan sinkronisasi audio yang presisi."
   },
   {
     id: 4,
@@ -45,5 +45,23 @@ export const works: WorkItem[] = [
     thumbnail: "/assets/thumb_fleeting.png",
     imageUrl: "/assets/thumb_fleeting.png",
     desc: "High-end portraiture focusing on dramatic side-lighting and facial expressions. Edited with soft shadow roll-offs and a muted, cinematic color palette."
+  },
+  {
+    id: 5,
+    title: "Dokumenter - SUARA DARI BUTTA TOA",
+    category: "film",
+    role: "Director & Editor",
+    thumbnail: "/assets/thumb_echoes.png",
+    videoUrl: "https://www.youtube.com/embed/SbQUOUao7xI?si=4Vxe1jhoDbrrtc2P",
+    desc: "Sebuah karya dokumenter naratif mendalam yang mengangkat suara, budaya, dan nilai kehidupan masyarakat lokal di Butta Toa."
+  },
+  {
+    id: 6,
+    title: "Performance - SYNCHRONIZE FEST 2025 - NEGATIFA",
+    category: "editing",
+    role: "Live Concert Editor & Colorist",
+    thumbnail: "/assets/thumb_horizon.png",
+    videoUrl: "https://www.youtube.com/embed/Arb8UgtJm2w?si=OrODDPmq6WUNhk6T",
+    desc: "Rekaman penampilan live band NEGATIFA di festival musik besar SYNCHRONIZE FEST 2025. Proses editing multi-kamera yang intens untuk merepresentasikan energi panggung yang otentik."
   }
 ];
