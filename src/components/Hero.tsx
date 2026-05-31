@@ -17,9 +17,25 @@ const softwareSkills = [
 export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
   return (
     <section className="relative min-h-[90vh] flex flex-col justify-center items-start px-6 md:px-20 py-20 overflow-hidden bg-dot-pattern bg-grain">
+      {/* Background Image with Gradient Overlay */}
+      <div className="absolute inset-0 -z-10 w-full h-full overflow-hidden select-none pointer-events-none">
+        <img 
+          src="/assets/Rashqy-WIZED00-24.webp" 
+          alt="Rasqhy Background" 
+          className="absolute right-0 top-0 w-full md:w-[60%] h-full object-cover object-center opacity-30 md:opacity-40 transition-opacity duration-1000"
+          loading="eager"
+        />
+        {/* Gradient Overlay from left to right for text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 md:via-background/50 to-transparent" />
+        {/* Mobile dimming overlay */}
+        <div className="absolute inset-0 bg-black/20 md:bg-transparent" />
+        {/* Bottom blend transition to next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+      </div>
+
       {/* Background Glowing Spheres */}
-      <div className="absolute top-1/4 left-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-blue-600/10 blur-[80px] md:blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute bottom-1/4 right-1/4 w-[250px] md:w-[400px] h-[250px] md:h-[400px] rounded-full bg-purple-600/10 blur-[80px] md:blur-[100px] pointer-events-none -z-10" />
+      <div className="absolute top-1/4 left-1/4 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-blue-600/5 blur-[80px] md:blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute bottom-1/4 right-1/4 w-[250px] md:w-[400px] h-[250px] md:h-[400px] rounded-full bg-purple-600/5 blur-[80px] md:blur-[100px] pointer-events-none -z-10" />
 
       <div className="max-w-4xl space-y-8 z-10">
         {/* Sub-header / Role */}
