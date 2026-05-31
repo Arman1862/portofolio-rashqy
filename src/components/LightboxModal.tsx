@@ -53,19 +53,17 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
             {/* Media Area (Left side) */}
             <div className={`w-full md:w-[65%] bg-black flex items-center justify-center relative ${
               work.category === "film" || work.category === "editing"
-                ? "aspect-video md:aspect-auto md:h-full md:min-h-[450px]"
+                ? "aspect-video"
                 : "aspect-video md:aspect-auto md:h-full min-h-[250px] md:min-h-[450px]"
             }`}>
               {(work.category === "film" || work.category === "editing") && work.videoUrl ? (
-                <div className="w-full aspect-video max-h-full max-w-full relative">
-                  <iframe
-                    src={work.videoUrl}
-                    title={work.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    className="w-full h-full border-0 absolute inset-0"
-                  />
-                </div>
+                <iframe
+                  src={work.videoUrl}
+                  title={work.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full border-0 absolute inset-0"
+                />
               ) : work.imageUrl ? (
                 <img
                   src={work.imageUrl}
