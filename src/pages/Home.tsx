@@ -192,12 +192,12 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Interactive Workspace Panel - Stacked Layout */}
-          <div className="space-y-8 md:space-y-12">
+          {/* Interactive Workspace Panel - Side-by-Side on Desktop */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             
-            {/* Top: Program Monitor (Preview Screen) - Centered, comfortable reading width */}
-            <div className="w-full max-w-3xl mx-auto">
-              <div className="w-full aspect-video md:aspect-[21/9] rounded-2xl bg-neutral-950/80 border border-white/5 p-6 md:p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl shadow-black/80 backdrop-blur-xl">
+            {/* Left: Program Monitor (Preview Screen) */}
+            <div className="lg:col-span-5 w-full flex flex-col">
+              <div className="w-full aspect-video lg:aspect-auto lg:h-full rounded-2xl bg-neutral-950/80 border border-white/5 p-6 md:p-8 relative overflow-hidden flex flex-col justify-between shadow-2xl shadow-black/80 backdrop-blur-xl">
                 
                 {/* Viewport pulsers / decorative grid */}
                 <div className="absolute inset-0 bg-dot-pattern opacity-10 pointer-events-none" />
@@ -258,9 +258,9 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Bottom: Timeline Panel (Resolve/Premiere mockup) - Spans full width for maximum readability */}
-            <div className="w-full">
-              <div className="w-full rounded-2xl bg-neutral-950/80 border border-white/5 overflow-hidden shadow-2xl backdrop-blur-xl flex flex-col">
+            {/* Right: Sequence Timeline Panel */}
+            <div className="lg:col-span-7 w-full flex flex-col">
+              <div className="w-full h-full rounded-2xl bg-neutral-950/80 border border-white/5 overflow-hidden shadow-2xl backdrop-blur-xl flex flex-col justify-between">
                 
                 {/* Timeline Header (Workspace name & Mini transport controls) */}
                 <div className="bg-neutral-900/60 px-5 py-3.5 border-b border-white/5 flex items-center justify-between select-none">
@@ -311,8 +311,8 @@ export default function Home() {
                   </div>
 
                   {/* Right Column: Scrollable Tracks & Timeline ruler */}
-                  <div className="flex-1 overflow-x-auto relative select-none">
-                    <div className="min-w-[800px] md:min-w-full relative">
+                  <div className="flex-1 overflow-x-auto relative select-none scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                    <div className="min-w-[750px] lg:min-w-[850px] relative">
                       
                       {/* Timeline Ruler */}
                       <div className="h-12 border-b border-white/5 grid grid-cols-6 w-full bg-neutral-950/40 text-[10px] font-mono text-gray-500 select-none">
