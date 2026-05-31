@@ -31,7 +31,7 @@ export default function WorksPage() {
   }, [hash]);
 
   return (
-    <div className="min-h-screen bg-background bg-dot-pattern bg-grain px-6 md:px-20 py-12 md:py-20 relative">
+    <div className="min-h-screen bg-background bg-dot-pattern bg-grain px-6 md:px-20 py-12 md:py-20 relative overflow-hidden">
       {/* Decorative Glows */}
       <div className="absolute top-1/4 left-1/4 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-blue-600/5 blur-[100px] md:blur-[150px] pointer-events-none -z-10" />
       <div className="absolute bottom-1/4 right-1/4 w-[300px] md:w-[600px] h-[300px] md:h-[600px] rounded-full bg-purple-600/5 blur-[100px] md:blur-[150px] pointer-events-none -z-10" />
@@ -208,7 +208,7 @@ export default function WorksPage() {
             </div>
           </div>
 
-          <div className="columns-1 sm:columns-2 gap-6 space-y-6">
+          <div className="columns-1 sm:columns-2 gap-6">
             {photoWorks.map((work) => (
               <motion.div
                 key={work.id}
