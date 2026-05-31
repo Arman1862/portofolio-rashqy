@@ -45,10 +45,23 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="relative w-full max-w-5xl rounded-2xl overflow-hidden glass-panel flex flex-col md:flex-row z-10 max-h-[90vh] md:max-h-[80vh] shadow-2xl shadow-blue-500/5"
           >
-            {/* Close Button */}
+            {/* Mobile Header Bar */}
+            <div className="flex items-center justify-between px-5 py-3.5 bg-neutral-950/90 border-b border-white/5 md:hidden w-full z-20">
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                {work.category === "film" ? "Film" : work.category === "editing" ? "Video Editing" : "Photography"}
+              </span>
+              <button
+                onClick={onClose}
+                className="p-1.5 rounded-full bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Desktop Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 left-4 md:left-auto md:right-4 p-2 rounded-full bg-black/60 border border-white/10 hover:border-white/30 text-white cursor-pointer transition-all duration-300 z-20"
+              className="hidden md:flex absolute top-4 right-4 p-2 rounded-full bg-black/60 border border-white/10 hover:border-white/30 text-white cursor-pointer transition-all duration-300 z-20 items-center justify-center"
             >
               <X size={18} />
             </button>
@@ -58,7 +71,7 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
               isYouTube
                 ? "aspect-video"
                 : isDriveVideo
-                  ? "aspect-[4/3] md:aspect-auto md:h-full md:min-h-[450px]"
+                  ? "h-[320px] sm:h-[360px] md:aspect-auto md:h-full md:min-h-[450px]"
                   : "aspect-video md:aspect-auto md:h-full min-h-[250px] md:min-h-[450px]"
             }`}>
               {work.videoUrl ? (
