@@ -81,7 +81,7 @@ export const works: WorkItem[] = [
     title: "Angkatan - SMKN 53 Jakarta - 1",
     category: "photo",
     role: "Photographer & Colorist",
-    thumbnail: "https://lh3.googleusercontent.com/d/1UnMrjVxxAiCkZvZ0PzdyF7yXZm2p7S16=w800",
+    thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1UnMrjVxxAiCkZvZ0PzdyF7yXZm2p7S16",
     videoUrl: "https://drive.google.com/file/d/1UnMrjVxxAiCkZvZ0PzdyF7yXZm2p7S16/preview",
     desc: "Sesi dokumentasi foto angkatan bertema kebersamaan di lingkungan sekolah SMKN 53 Jakarta."
   },
@@ -90,7 +90,7 @@ export const works: WorkItem[] = [
     title: "Angkatan - SMKN 53 Jakarta - 4",
     category: "photo",
     role: "Photographer & Colorist",
-    thumbnail: "https://lh3.googleusercontent.com/d/1GVSFBC5ogd_fGulMtoYvLCzktf4CItQS=w800",
+    thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1GVSFBC5ogd_fGulMtoYvLCzktf4CItQS",
     videoUrl: "https://drive.google.com/file/d/1GVSFBC5ogd_fGulMtoYvLCzktf4CItQS/preview",
     desc: "Sesi foto dokumenter luar ruangan (outdoor) untuk album kenangan SMKN 53 Jakarta."
   },
@@ -99,7 +99,7 @@ export const works: WorkItem[] = [
     title: "Performance - Nau - 2",
     category: "photo",
     role: "Stage Photographer",
-    thumbnail: "https://lh3.googleusercontent.com/d/11QU4oC5xEucSqNWFcEjqFrj1GPoQPb1b=w800",
+    thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=11QU4oC5xEucSqNWFcEjqFrj1GPoQPb1b",
     videoUrl: "https://drive.google.com/file/d/11QU4oC5xEucSqNWFcEjqFrj1GPoQPb1b/preview",
     desc: "Foto panggung aksi panggung live concert Nau dengan kontras lampu panggung dramatis."
   },
@@ -108,7 +108,7 @@ export const works: WorkItem[] = [
     title: "Performance - Nau - 3",
     category: "photo",
     role: "Stage Photographer",
-    thumbnail: "https://lh3.googleusercontent.com/d/1wOjv5DJ2zVmVUpnkzYjT5WikNX5XuysN=w800",
+    thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1wOjv5DJ2zVmVUpnkzYjT5WikNX5XuysN",
     videoUrl: "https://drive.google.com/file/d/1wOjv5DJ2zVmVUpnkzYjT5WikNX5XuysN/preview",
     desc: "Momen panggung dinamis konser musik Nau dengan permainan lensa portrait bersudut dekat."
   },
@@ -117,7 +117,7 @@ export const works: WorkItem[] = [
     title: "Travel - Pelepasan Tunas Harapan - 1",
     category: "photo",
     role: "Documentary Photographer",
-    thumbnail: "https://lh3.googleusercontent.com/d/10vWhk5SW-UaaJAneNYdTDNLY77-Ki_DU=w800",
+    thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=10vWhk5SW-UaaJAneNYdTDNLY77-Ki_DU",
     videoUrl: "https://drive.google.com/file/d/10vWhk5SW-UaaJAneNYdTDNLY77-Ki_DU/preview",
     desc: "Dokumentasi foto perjalanan dan prosesi awal kegiatan Pelepasan Tunas Harapan."
   },
@@ -126,7 +126,7 @@ export const works: WorkItem[] = [
     title: "Travel - Pelepasan Tunas Harapan - 3",
     category: "photo",
     role: "Documentary Photographer",
-    thumbnail: "https://lh3.googleusercontent.com/d/1GvK_J-uPtHbJGY6Lx7D_CQ5RhAIpjcry=w800",
+    thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1GvK_J-uPtHbJGY6Lx7D_CQ5RhAIpjcry",
     videoUrl: "https://drive.google.com/file/d/1GvK_J-uPtHbJGY6Lx7D_CQ5RhAIpjcry/preview",
     desc: "Esensi dokumentasi kegiatan petualangan alam bebas dari acara Pelepasan Tunas Harapan."
   }

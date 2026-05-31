@@ -15,7 +15,9 @@ export default function ImageWithLoader({
   const [hasError, setHasError] = useState(false);
 
   return (
-    <div className={`relative w-full overflow-hidden bg-neutral-900 border border-white/5 rounded-xl ${aspectRatioClass} flex items-center justify-center`}>
+    <div className={`relative w-full overflow-hidden bg-neutral-900 border border-white/5 rounded-xl ${aspectRatioClass} flex items-center justify-center ${
+      !isLoaded || hasError ? "min-h-[250px]" : ""
+    }`}>
       {/* Skeleton Loading State */}
       {!isLoaded && !hasError && (
         <div className="absolute inset-0 bg-neutral-900/90 flex flex-col items-center justify-center gap-3">
