@@ -22,7 +22,7 @@ export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
         <img 
           src="/assets/Rashqy-WIZED00-24.webp" 
           alt="Rasqhy Background" 
-          className="absolute right-0 top-0 w-full h-full object-cover object-right md:object-[80%_center] opacity-50 md:opacity-65 transition-opacity duration-1000"
+          className="absolute right-0 top-0 w-full h-full object-cover object-right md:object-[90%_center] opacity-50 md:opacity-65 transition-opacity duration-1000"
           loading="eager"
         />
         {/* Custom multi-stop cubic gradient easing for seamless background blend */}
