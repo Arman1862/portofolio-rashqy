@@ -22,15 +22,15 @@ export default function Hero({ onPlayReel, onExploreWorks }: HeroProps) {
         <img 
           src="/assets/Rashqy-WIZED00-24.webp" 
           alt="Rasqhy Background" 
-          className="absolute right-0 top-0 w-full md:w-[60%] h-full object-cover object-center opacity-30 md:opacity-40 transition-opacity duration-1000"
+          className="absolute right-0 top-0 w-full md:w-[60%] h-full object-cover object-center opacity-60 md:opacity-75 transition-opacity duration-1000"
           loading="eager"
         />
         {/* Gradient Overlay from left to right for text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 md:via-background/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#080808] via-[#080808]/90 md:via-[#080808]/45 to-transparent" />
         {/* Mobile dimming overlay */}
-        <div className="absolute inset-0 bg-black/20 md:bg-transparent" />
+        <div className="absolute inset-0 bg-black/10 md:bg-transparent" />
         {/* Bottom blend transition to next section */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#080808] to-transparent" />
       </div>
 
       {/* Background Glowing Spheres */}
