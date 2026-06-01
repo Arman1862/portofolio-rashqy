@@ -92,7 +92,7 @@ export default function LightboxModal({ work, onClose }: LightboxModalProps) {
             </div>
 
             {/* Project Details Sidebar (Right side) */}
-            <div className="w-full md:w-[35%] p-6 md:p-10 flex flex-col justify-between overflow-y-auto bg-neutral-950/80 md:h-full border-t md:border-t-0 md:border-l border-white/5">
+            <div className="w-full md:w-[35%] p-6 md:p-10 flex flex-col justify-between overflow-y-auto bg-neutral-950/80 flex-1 md:flex-initial md:h-full border-t md:border-t-0 md:border-l border-white/5 min-h-0">
               <div className="space-y-6">
                 
                 {/* Category Pill */}

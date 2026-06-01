@@ -200,6 +200,10 @@ export default function Home() {
     handleTimelineInteraction(e.touches[0].clientX);
 
     const handleTouchMove = (moveEvent: TouchEvent) => {
+      // Prevent browser default scrolling gesture during playhead dragging
+      if (moveEvent.cancelable) {
+        moveEvent.preventDefault();
+      }
       handleTimelineInteraction(moveEvent.touches[0].clientX);
     };
 
@@ -209,13 +213,24 @@ export default function Home() {
       window.removeEventListener("touchend", handleTouchEnd);
     };
 
-    window.addEventListener("touchmove", handleTouchMove);
+    // Register listener with passive: false to allow e.preventDefault()
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
     window.addEventListener("touchend", handleTouchEnd);
   };
 
   const handleExploreWorks = () => {
     // Scroll to category gateway
     document.getElementById("gateway-section")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleViewCv = () => {
+    if (window.innerWidth < 768) {
+      // Open PDF directly in new tab for mobile viewports to avoid iframe scroll issues
+      window.open("/assets/CV Online Rasqhy.pdf", "_blank");
+    } else {
+      // Show glassmorphic popup viewer modal on desktop
+      setIsCvOpen(true);
+    }
   };
 
   const handleSelectCategory = (category: 'film' | 'editing' | 'photo') => {
@@ -231,7 +246,7 @@ export default function Home() {
   return (
     <div className="space-y-0">
       {/* Hero Section */}
-      <Hero onExploreWorks={handleExploreWorks} onViewCv={() => setIsCvOpen(true)} />
+      <Hero onExploreWorks={handleExploreWorks} onViewCv={handleViewCv} />
 
       {/* Gateway Section container */}
       <div id="gateway-section">
