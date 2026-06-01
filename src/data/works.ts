@@ -15,7 +15,7 @@ export const works: WorkItem[] = [
     id: 1,
     title: "JUANG - 2024",
     category: "film",
-    role: "Director & Editor",
+    role: "DIRECTOR & EDITOR",
     thumbnail: "/assets/juang.webp",
     videoUrl: "https://drive.google.com/file/d/1PdSjkI9YpB21mwz2vjAbEzb1UwuW8dBl/preview",
     desc: "Sebuah karya film pendek yang menarasikan kisah perjuangan, dedikasi, dan keteguhan hati dalam menghadapi rintangan kehidupan."
@@ -24,19 +24,19 @@ export const works: WorkItem[] = [
     id: 2,
     title: "Mimpi Buruk di Ujung Kota - Festival Film Bahari 2024",
     category: "film",
-    role: "Lead Director & Editor",
+    role: "DIRECTOR & EDITOR",
     thumbnail: "/assets/mimpi_buruk_di_ujung_kota.webp",
     videoUrl: "https://www.youtube.com/embed/R6JFJT9LzmE?si=7WK0s4qZRE2QsVBB",
     desc: "Film pendek naratif fiksi yang diproduksi untuk Festival Film Bahari 2024, mengeksplorasi sisi kehidupan pesisir kota yang penuh misteri."
   },
   {
     id: 3,
-    title: "ZIS (Bayar Zakat atau Menyesal?) - 2025",
+    title: "Bayar Zakat atau Menyesal? - 2025",
     category: "film",
-    role: "Director & Lead Editor",
+    role: "DIRECTOR & EDITOR",
     thumbnail: "/assets/bayar_zakat_atau_menyesal.webp",
     videoUrl: "https://www.youtube.com/embed/sbrV67nRva8?si=o8g1eCCu0KLRqUXm",
-    desc: "Film pendek edukatif bergenre komedi moral tentang kepatuhan dan kesadaran pentingnya menunaikan ibadah zakat."
+    desc: "Film pendek edukatif bergenre horror moral tentang kepatuhan dan kesadaran pentingnya menunaikan ibadah zakat."
   },
   // VIDEO EDITING
   {
@@ -78,34 +78,34 @@ export const works: WorkItem[] = [
   // PHOTOGRAPHY
   {
     id: 8,
-    title: "Angkatan - SMKN 53 Jakarta - 1",
+    title: "Angkatan - SMKN 53 Jakarta",
     category: "photo",
-    role: "Photographer & Colorist",
+    role: "Documentary Photographer",
     thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1UnMrjVxxAiCkZvZ0PzdyF7yXZm2p7S16",
     videoUrl: "https://drive.google.com/file/d/1UnMrjVxxAiCkZvZ0PzdyF7yXZm2p7S16/preview",
     desc: "Sesi dokumentasi foto angkatan bertema kebersamaan di lingkungan sekolah SMKN 53 Jakarta."
   },
   {
     id: 9,
-    title: "Angkatan - SMKN 53 Jakarta - 4",
+    title: "Angkatan - SMKN 53 Jakarta",
     category: "photo",
-    role: "Photographer & Colorist",
+    role: "Documentary Photographer",
     thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1GVSFBC5ogd_fGulMtoYvLCzktf4CItQS",
     videoUrl: "https://drive.google.com/file/d/1GVSFBC5ogd_fGulMtoYvLCzktf4CItQS/preview",
     desc: "Sesi foto dokumenter luar ruangan (outdoor) untuk album kenangan SMKN 53 Jakarta."
   },
   {
     id: 10,
-    title: "Performance - Nau - 2",
+    title: "Performance - Nau",
     category: "photo",
     role: "Stage Photographer",
     thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=11QU4oC5xEucSqNWFcEjqFrj1GPoQPb1b",
     videoUrl: "https://drive.google.com/file/d/11QU4oC5xEucSqNWFcEjqFrj1GPoQPb1b/preview",
-    desc: "Foto panggung aksi panggung live concert Nau dengan kontras lampu panggung dramatis."
+    desc: "Potret kebersamaan setelah penampilan Nau dengan suasana yang hangat dan penuh energi."
   },
   {
     id: 11,
-    title: "Performance - Nau - 3",
+    title: "Performance - Nau",
     category: "photo",
     role: "Stage Photographer",
     thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1wOjv5DJ2zVmVUpnkzYjT5WikNX5XuysN",
@@ -114,20 +114,20 @@ export const works: WorkItem[] = [
   },
   {
     id: 12,
-    title: "Travel - Pelepasan Tunas Harapan - 1",
+    title: "Travel - Pelepasan Tunas Harapan",
     category: "photo",
-    role: "Documentary Photographer",
+    role: "Travel Photographer",
     thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=10vWhk5SW-UaaJAneNYdTDNLY77-Ki_DU",
     videoUrl: "https://drive.google.com/file/d/10vWhk5SW-UaaJAneNYdTDNLY77-Ki_DU/preview",
     desc: "Dokumentasi foto perjalanan dan prosesi awal kegiatan Pelepasan Tunas Harapan."
   },
   {
     id: 13,
-    title: "Travel - Pelepasan Tunas Harapan - 3",
+    title: "Travel - Pelepasan Tunas Harapan",
     category: "photo",
-    role: "Documentary Photographer",
+    role: "Travel Photographer",
     thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1GvK_J-uPtHbJGY6Lx7D_CQ5RhAIpjcry",
     videoUrl: "https://drive.google.com/file/d/1GvK_J-uPtHbJGY6Lx7D_CQ5RhAIpjcry/preview",
-    desc: "Esensi dokumentasi kegiatan petualangan alam bebas dari acara Pelepasan Tunas Harapan."
+    desc: "Momen kebersamaan dan sesi foto kreatif menjelang acara Pelepasan Tunas Harapan."
   }
 ];
