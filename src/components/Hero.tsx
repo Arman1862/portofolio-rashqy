@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, ExternalLink } from "lucide-react";
 import { Icon } from "@iconify/react";
 
 interface HeroProps {
@@ -145,6 +145,16 @@ export default function Hero({ onExploreWorks }: HeroProps) {
             </span>
             Explore Works
           </button>
+
+          <a
+            href="/assets/CV Online Rasqhy.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer transition-all duration-300 group"
+          >
+            <span>View CV</span>
+            <ExternalLink size={16} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+          </a>
         </motion.div>
 
         {/* Software Badges */}
