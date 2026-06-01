@@ -22,7 +22,7 @@ export default function CategorySplit({ onSelectCategory }: CategorySplitProps) 
           {/* Background image with overlay */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-            style={{ backgroundImage: `url('/assets/thumb_echoes.png')` }}
+            style={{ backgroundImage: `url('/assets/gateway_films.webp')` }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 transition-opacity duration-500 group-hover:opacity-90" />
           
@@ -59,7 +59,7 @@ export default function CategorySplit({ onSelectCategory }: CategorySplitProps) 
           {/* Background image with overlay */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-            style={{ backgroundImage: `url('/assets/thumb_horizon.png')` }}
+            style={{ backgroundImage: `url('/assets/gateway_editing.webp')` }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 transition-opacity duration-500 group-hover:opacity-90" />
           
@@ -96,7 +96,7 @@ export default function CategorySplit({ onSelectCategory }: CategorySplitProps) 
           {/* Background image with overlay */}
           <div 
             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-            style={{ backgroundImage: `url('/assets/thumb_fleeting.png')` }}
+            style={{ backgroundImage: `url('/assets/gateway_photo.webp')` }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30 transition-opacity duration-500 group-hover:opacity-90" />
           
