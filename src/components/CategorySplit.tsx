@@ -34,10 +34,10 @@ export default function CategorySplit({ onSelectCategory }: CategorySplitProps) 
               <span className="text-[10px] uppercase tracking-widest font-semibold font-sans">Gateway 01</span>
             </div>
             
-            <h2 className="text-xl md:text-2xl font-bold font-heading text-white">FILMS</h2>
+            <h2 className="text-xl md:text-2xl font-bold font-heading text-white">FILM</h2>
             
             <p className="text-xs text-gray-400 font-sans font-light leading-relaxed line-clamp-2">
-              Cinematic stories captured on camera. Narrative direction, travel journals, and creative short films.
+              A collection of cinematic stories, visual explorations, and narrative-driven films crafted through atmosphere, emotion, and intentional storytelling.
             </p>
             
             <div className="flex items-center gap-2 text-[10px] font-semibold text-white pt-2 font-sans group-hover:text-blue-400 transition-colors duration-300">
@@ -65,19 +65,19 @@ export default function CategorySplit({ onSelectCategory }: CategorySplitProps) 
           
           {/* Card Content */}
           <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 space-y-2 z-10">
-            <div className="flex items-center gap-2 text-amber-400">
+            <div className="flex items-center gap-2 text-blue-400">
               <Scissors size={16} />
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
               <span className="text-[10px] uppercase tracking-widest font-semibold font-sans">Gateway 02</span>
             </div>
             
             <h2 className="text-xl md:text-2xl font-bold font-heading text-white">VIDEO EDITING</h2>
             
             <p className="text-xs text-gray-400 font-sans font-light leading-relaxed line-clamp-2">
-              Pacing, rhythm, and color grading. High-end edits, showreels, music videos, and commercial cuts.
+              Transforming raw footage into immersive visual experiences through pacing, rhythm, emotion, and cinematic editing techniques.
             </p>
             
-            <div className="flex items-center gap-2 text-[10px] font-semibold text-white pt-2 font-sans group-hover:text-amber-400 transition-colors duration-300">
+            <div className="flex items-center gap-2 text-[10px] font-semibold text-white pt-2 font-sans group-hover:text-blue-400 transition-colors duration-300">
               <span>EXPLORE EDITS</span>
               <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform duration-300" />
             </div>
@@ -102,19 +102,19 @@ export default function CategorySplit({ onSelectCategory }: CategorySplitProps) 
           
           {/* Card Content */}
           <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8 space-y-2 z-10">
-            <div className="flex items-center gap-2 text-purple-400">
+            <div className="flex items-center gap-2 text-blue-400">
               <Camera size={16} />
-              <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
               <span className="text-[10px] uppercase tracking-widest font-semibold font-sans">Gateway 03</span>
             </div>
             
             <h2 className="text-xl md:text-2xl font-bold font-heading text-white">PHOTOGRAPHY</h2>
             
             <p className="text-xs text-gray-400 font-sans font-light leading-relaxed line-clamp-2">
-              Capturing moments frozen in time. Street reflections, cinematic portraits, and landscapes.
+              Capturing moments, expressions, and environments through thoughtful composition, natural atmosphere, and cinematic visual aesthetics.
             </p>
             
-            <div className="flex items-center gap-2 text-[10px] font-semibold text-white pt-2 font-sans group-hover:text-purple-400 transition-colors duration-300">
+            <div className="flex items-center gap-2 text-[10px] font-semibold text-white pt-2 font-sans group-hover:text-blue-400 transition-colors duration-300">
               <span>EXPLORE PHOTOS</span>
               <ArrowRight size={12} className="transform group-hover:translate-x-1 transition-transform duration-300" />
             </div>

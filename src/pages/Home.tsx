@@ -235,7 +235,7 @@ export default function Home() {
               "Good editing is invisible. Great editing is unforgettable."
             </blockquote>
             <p className="text-sm md:text-base text-muted-foreground font-sans font-light leading-relaxed max-w-2xl">
-              I believe every project has a unique pulse. My job is to find that rhythm, cut away the noise, and construct a narrative that resonates. Whether it is a high-octane commercial edit or a minimalist portrait photograph, the story always comes first.
+              I believe the most memorable visuals are the ones people can feel. Through editing, photography, and filmmaking, I focus on creating atmospheric and emotionally driven work that stays with people beyond the screen.
             </p>
           </div>
 
