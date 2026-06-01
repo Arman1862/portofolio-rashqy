@@ -101,15 +101,24 @@ export default function Home() {
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
   const [isCvOpen, setIsCvOpen] = useState<boolean>(false);
 
-  // Prevent background scroll when CV Modal is open
+  // Prevent background scroll when CV Modal is open (scroll-lock on both html and body)
   useEffect(() => {
     if (isCvOpen) {
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.height = "100%";
       document.body.style.overflow = "hidden";
+      document.body.style.height = "100%";
     } else {
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
       document.body.style.overflow = "";
+      document.body.style.height = "";
     }
     return () => {
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
       document.body.style.overflow = "";
+      document.body.style.height = "";
     };
   }, [isCvOpen]);
 
@@ -605,7 +614,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
-             className="relative w-full max-w-4xl h-[92vh] bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+             className="relative w-full max-w-5xl h-[96vh] bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
             >
               {/* Modal Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-neutral-950/80">
@@ -614,20 +623,20 @@ export default function Home() {
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
                   <span className="text-xs text-muted-foreground font-sans font-light">CV Online Rasqhy.pdf</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <a
                     href="/assets/CV Online Rasqhy.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-white transition-colors duration-300 p-1.5 rounded-lg hover:bg-white/5 cursor-pointer flex items-center gap-1.5 text-xs font-sans"
+                    className="text-xs font-sans text-blue-400 hover:text-blue-300 transition-all duration-300 px-3 py-1.5 rounded-full bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 hover:border-blue-500/30 flex items-center gap-1.5 cursor-pointer shadow-sm"
                     title="Open in New Tab"
                   >
                     <span>Open in New Tab</span>
-                    <ExternalLink size={14} />
+                    <ExternalLink size={13} />
                   </a>
                   <button
                     onClick={() => setIsCvOpen(false)}
-                    className="text-muted-foreground hover:text-white transition-colors duration-300 p-1.5 rounded-lg hover:bg-white/5 cursor-pointer"
+                    className="text-muted-foreground hover:text-white transition-colors duration-300 p-1.5 rounded-lg hover:bg-white/5 cursor-pointer flex items-center justify-center"
                     title="Close Viewer"
                   >
                     <X size={18} />
