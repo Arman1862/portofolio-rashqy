@@ -43,7 +43,7 @@ export const works: WorkItem[] = [
     id: 4,
     title: "After Movie - SINILAH Batch #3 - 2025",
     category: "editing",
-    role: "Lead Video Editor",
+    role: "VIDEOGRAPHER & EDITOR",
     thumbnail: "/assets/sinilah_batch_3.webp",
     videoUrl: "https://drive.google.com/file/d/1XDut5knVN0uBjvJE7WBiYdRxzV2w5HV1/preview",
     desc: "After movie energik yang mengabadikan momen dan keseruan acara SINILAH Batch #3 tahun 2025. Dioptimalkan dengan transisi tempo cepat dan sinkronisasi audio dinamis."
@@ -52,7 +52,7 @@ export const works: WorkItem[] = [
     id: 5,
     title: "SUARA DARI BUTTA TOA - 2026",
     category: "editing",
-    role: "Video Editor & Colorist",
+    role: "ONLINE EDITOR",
     thumbnail: "/assets/suara_dari_butta_toa.webp",
     videoUrl: "https://www.youtube.com/embed/SbQUOUao7xI?si=9zeRO6KyUQnoDbuG",
     desc: "Dokumentasi editing mendalam yang merajut realitas kehidupan sosial, budaya, dan spiritual di Butta Toa."
@@ -61,7 +61,7 @@ export const works: WorkItem[] = [
     id: 6,
     title: "SYNCHRONIZE FEST 2025 - NEGATIFA",
     category: "editing",
-    role: "Multi-camera Video Editor",
+    role: "OFFLINE EDITOR",
     thumbnail: "/assets/synchronize_fest_negatifa.webp",
     videoUrl: "https://www.youtube.com/embed/Arb8UgtJm2w?si=runMhqN96ouevV0k",
     desc: "Proses editing live performance multi-kamera dari penampilan NEGATIFA di festival musik terkemuka SYNCHRONIZE FEST 2025."
@@ -70,7 +70,7 @@ export const works: WorkItem[] = [
     id: 7,
     title: "Video Angkatan - SMKN 53 Jakarta - 2026",
     category: "editing",
-    role: "Videographer & Video Editor",
+    role: "DIRECTOR & EDITOR",
     thumbnail: "/assets/3_years_we_are_together.webp",
     videoUrl: "https://drive.google.com/file/d/1bTVOwhB-oGvq0FXO9YgA2B1wf00GjrkU/preview",
     desc: "Video kenangan kelulusan dan masa-masa kebersamaan sekolah siswa-siswi SMKN 53 Jakarta angkatan 2026."
