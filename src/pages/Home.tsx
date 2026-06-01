@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import Hero from "../components/Hero";
 import CategorySplit from "../components/CategorySplit";
 import LightboxModal from "../components/LightboxModal";
-import { works } from "../data/works";
 import type { WorkItem } from "../data/works";
 
 
@@ -191,14 +190,6 @@ export default function Home() {
     window.addEventListener("touchend", handleTouchEnd);
   };
 
-  // Play the first video as showreel mockup
-  const handlePlayReel = () => {
-    const firstVideo = works.find((w) => w.category === "film" || w.category === "editing");
-    if (firstVideo) {
-      setSelectedWork(firstVideo);
-    }
-  };
-
   const handleExploreWorks = () => {
     // Scroll to category gateway
     document.getElementById("gateway-section")?.scrollIntoView({ behavior: "smooth" });
@@ -217,7 +208,7 @@ export default function Home() {
   return (
     <div className="space-y-0">
       {/* Hero Section */}
-      <Hero onPlayReel={handlePlayReel} onExploreWorks={handleExploreWorks} />
+      <Hero onExploreWorks={handleExploreWorks} />
 
       {/* Gateway Section container */}
       <div id="gateway-section">
