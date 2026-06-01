@@ -240,7 +240,7 @@ export default function Home() {
           </div>
 
           {/* Key Metrics / Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-8 lg:border-l lg:border-white/5 lg:pl-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-8 lg:border-l lg:border-white/5 lg:pl-16">
             <div className="space-y-1">
               <h4 className="text-3xl font-bold font-heading text-white">5+</h4>
               <p className="text-xs text-muted-foreground uppercase tracking-widest font-sans font-semibold">Years Experience</p>
@@ -248,10 +248,6 @@ export default function Home() {
             <div className="space-y-1">
               <h4 className="text-3xl font-bold font-heading text-white">50+</h4>
               <p className="text-xs text-muted-foreground uppercase tracking-widest font-sans font-semibold">Projects Completed</p>
-            </div>
-            <div className="space-y-1">
-              <h4 className="text-3xl font-bold font-heading text-white">20+</h4>
-              <p className="text-xs text-muted-foreground uppercase tracking-widest font-sans font-semibold"> Girl Friend</p>
             </div>
           </div>
           
