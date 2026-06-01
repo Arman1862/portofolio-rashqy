@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Mail, ExternalLink, Calendar, Film, Volume2, Lock } from "lucide-react";
-import { motion } from "framer-motion";
+import { Mail, ExternalLink, Calendar, Film, Volume2, Lock, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import Hero from "../components/Hero";
 import CategorySplit from "../components/CategorySplit";
 import LightboxModal from "../components/LightboxModal";
@@ -99,6 +99,7 @@ const timelineEvents: TimelineEvent[] = [
 export default function Home() {
   const navigate = useNavigate();
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
+  const [isCvOpen, setIsCvOpen] = useState<boolean>(false);
   const [activeTimelineId, setActiveTimelineId] = useState<number>(1);
   const [playheadPercent, setPlayheadPercent] = useState<number>(37.5);
   const [isDraggingPlayhead, setIsDraggingPlayhead] = useState(false);
@@ -208,7 +209,7 @@ export default function Home() {
   return (
     <div className="space-y-0">
       {/* Hero Section */}
-      <Hero onExploreWorks={handleExploreWorks} />
+      <Hero onExploreWorks={handleExploreWorks} onViewCv={() => setIsCvOpen(true)} />
 
       {/* Gateway Section container */}
       <div id="gateway-section">
@@ -574,6 +575,53 @@ export default function Home() {
 
       {/* Showreel Lightbox */}
       <LightboxModal work={selectedWork} onClose={() => setSelectedWork(null)} />
+
+      {/* PDF CV Modal Viewer */}
+      <AnimatePresence>
+        {isCvOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4"
+          >
+            {/* Modal Container */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
+              className="relative w-full max-w-4xl h-[85vh] bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-neutral-950/80">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold tracking-wider text-blue-400 uppercase">CV Viewer</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
+                  <span className="text-xs text-muted-foreground font-sans font-light">CV Online Rasqhy.pdf</span>
+                </div>
+                <button
+                  onClick={() => setIsCvOpen(false)}
+                  className="text-muted-foreground hover:text-white transition-colors duration-300 p-1.5 rounded-lg hover:bg-white/5 cursor-pointer"
+                  title="Close Viewer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+              
+              {/* Modal Body (PDF Viewer) */}
+              <div className="flex-1 w-full h-full bg-neutral-950 p-2">
+                <iframe
+                  src="/assets/CV Online Rasqhy.pdf"
+                  className="w-full h-full border-0 rounded-lg bg-neutral-900"
+                  title="CV Online Rasqhy"
+                />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

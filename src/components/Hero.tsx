@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 
 interface HeroProps {
   onExploreWorks: () => void;
+  onViewCv: () => void;
 }
 
 interface SoftwareSkill {
@@ -68,7 +69,7 @@ const softwareSkills: SoftwareSkill[] = [
   },
 ];
 
-export default function Hero({ onExploreWorks }: HeroProps) {
+export default function Hero({ onExploreWorks, onViewCv }: HeroProps) {
   return (
     <section className="relative min-h-[90vh] flex flex-col justify-center items-start px-6 md:px-20 py-20 overflow-hidden bg-dot-pattern bg-grain">
       {/* Background Image with Gradient Overlay */}
@@ -146,15 +147,13 @@ export default function Hero({ onExploreWorks }: HeroProps) {
             Explore Works
           </button>
 
-          <a
-            href="/assets/CV Online Rasqhy.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={onViewCv}
             className="flex items-center gap-2 px-6 py-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer transition-all duration-300 group"
           >
             <span>View CV</span>
             <ExternalLink size={16} className="transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-          </a>
+          </button>
         </motion.div>
 
         {/* Software Badges */}
