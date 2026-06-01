@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Mail, ExternalLink, Calendar, Film, Volume2, Lock, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -100,6 +100,19 @@ export default function Home() {
   const navigate = useNavigate();
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
   const [isCvOpen, setIsCvOpen] = useState<boolean>(false);
+
+  // Prevent background scroll when CV Modal is open
+  useEffect(() => {
+    if (isCvOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isCvOpen]);
+
   const [activeTimelineId, setActiveTimelineId] = useState<number>(1);
   const [playheadPercent, setPlayheadPercent] = useState<number>(37.5);
   const [isDraggingPlayhead, setIsDraggingPlayhead] = useState(false);
@@ -592,7 +605,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
-              className="relative w-full max-w-4xl h-[85vh] bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
+             className="relative w-full max-w-4xl h-[92vh] bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden shadow-2xl flex flex-col"
             >
               {/* Modal Header */}
               <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-neutral-950/80">
@@ -601,13 +614,25 @@ export default function Home() {
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
                   <span className="text-xs text-muted-foreground font-sans font-light">CV Online Rasqhy.pdf</span>
                 </div>
-                <button
-                  onClick={() => setIsCvOpen(false)}
-                  className="text-muted-foreground hover:text-white transition-colors duration-300 p-1.5 rounded-lg hover:bg-white/5 cursor-pointer"
-                  title="Close Viewer"
-                >
-                  <X size={18} />
-                </button>
+                <div className="flex items-center gap-2">
+                  <a
+                    href="/assets/CV Online Rasqhy.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-muted-foreground hover:text-white transition-colors duration-300 p-1.5 rounded-lg hover:bg-white/5 cursor-pointer flex items-center gap-1.5 text-xs font-sans"
+                    title="Open in New Tab"
+                  >
+                    <span>Open in New Tab</span>
+                    <ExternalLink size={14} />
+                  </a>
+                  <button
+                    onClick={() => setIsCvOpen(false)}
+                    className="text-muted-foreground hover:text-white transition-colors duration-300 p-1.5 rounded-lg hover:bg-white/5 cursor-pointer"
+                    title="Close Viewer"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
               </div>
               
               {/* Modal Body (PDF Viewer) */}
