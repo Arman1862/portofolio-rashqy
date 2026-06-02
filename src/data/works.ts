@@ -90,8 +90,8 @@ export const works: WorkItem[] = [
     title: "Angkatan - SMKN 53 Jakarta",
     category: "photo",
     role: "Documentary Photographer",
-    thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=1GVSFBC5ogd_fGulMtoYvLCzktf4CItQS",
-    videoUrl: "https://drive.google.com/file/d/1GVSFBC5ogd_fGulMtoYvLCzktf4CItQS/preview",
+    thumbnail: "https://images.weserv.nl/?url=https://drive.google.com/uc?id=18-gjyz75DyZVcyw_MXXjHjlnivusX1-f",
+    videoUrl: "https://drive.google.com/file/d/18-gjyz75DyZVcyw_MXXjHjlnivusX1-f/preview",
     desc: "Sesi foto dokumenter luar ruangan (outdoor) untuk album kenangan SMKN 53 Jakarta."
   },
   {

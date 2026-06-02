@@ -72,7 +72,7 @@ const timelineEvents: TimelineEvent[] = [
   },
   {
     id: 5,
-    title: "Teman Tegar Maira",
+    title: "Gala Premiere Teman Tegar Maira",
     subtitle: "Aksa Bumi Langit",
     period: "2026",
     desc: "Created visual documentation focused on event moments, interactions, and storytelling elements.",
@@ -519,7 +519,7 @@ export default function Home() {
                               }`}
                             >
                               <span className="text-[9px] sm:text-[10px] font-bold truncate">
-                                Teman Tegar<span className="hidden md:inline"> Maira</span>
+                                Gala Premiere Teman Tegar<span className="hidden md:inline"> Maira</span>
                               </span>
                               <span className="text-[7.5px] opacity-60 font-mono">2026</span>
                             </button>
