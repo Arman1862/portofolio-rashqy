@@ -968,16 +968,86 @@ export default function AdminDashboard() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-300">Track Layer *</label>
+                    <label className="text-xs font-semibold text-gray-300">Tahun Mulai Grid *</label>
+                    <select
+                      value={tStartYear}
+                      onChange={(e) => {
+                        const newStart = parseInt(e.target.value);
+                        setTStartYear(newStart);
+                        if (tEndYear < newStart) setTEndYear(newStart);
+                      }}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 font-mono"
+                    >
+                      <option value={2023}>2023 (Kolom 1)</option>
+                      <option value={2024}>2024 (Kolom 2)</option>
+                      <option value={2025}>2025 (Kolom 3)</option>
+                      <option value={2026}>2026 (Kolom 4)</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-gray-300">Tahun Selesai Grid *</label>
+                    <select
+                      value={tEndYear}
+                      onChange={(e) => {
+                        const newEnd = parseInt(e.target.value);
+                        if (newEnd >= tStartYear) setTEndYear(newEnd);
+                      }}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 font-mono"
+                    >
+                      {[2023, 2024, 2025, 2026].filter(y => y >= tStartYear).map(y => (
+                        <option key={y} value={y}>{y}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-gray-300">Teks Periode *</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Contoh: 2023–2025"
+                      value={tPeriod}
+                      onChange={(e) => setTPeriod(e.target.value)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="space-y-1.5 sm:col-span-2">
+                    <label className="text-xs font-semibold text-gray-300 flex items-center justify-between">
+                      <span>Track Layer (Posisi Timeline) *</span>
+                      <span className="text-[10px] font-mono text-blue-400">Status Tahun {tStartYear}{tEndYear !== tStartYear ? `–${tEndYear}` : ''}</span>
+                    </label>
                     <select
                       value={tTrack}
                       onChange={(e) => setTTrack(e.target.value as any)}
                       className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500"
                     >
-                      <option value="V2">V2: BTS (Behind The Scenes)</option>
-                      <option value="V1">V1: MAIN (Primary Video)</option>
-                      <option value="A1">A1: AUD (Workshop / Audio)</option>
-                      <option value="A2">A2: DIA (Discussion / Dialogue)</option>
+                      {[
+                        { value: 'V1', name: 'Video Layer 1 (V1 - Utama)' },
+                        { value: 'V2', name: 'Video Layer 2 (V2 - BTS / Special)' },
+                        { value: 'A1', name: 'Audio Layer 1 (A1 - Workshop / Audio)' },
+                        { value: 'A2', name: 'Audio Layer 2 (A2 - Dialogue / Discussion)' }
+                      ].map((tr) => {
+                        const occupyingClip = timelineList.find((item) => {
+                          if (editingTimelineItem && String(item.id) === String(editingTimelineItem.id)) return false;
+                          if (item.track !== tr.value) return false;
+                          const itemEnd = item.end_year || item.start_year;
+                          return item.start_year <= tEndYear && itemEnd >= tStartYear;
+                        });
+
+                        const statusText = occupyingClip
+                          ? `(Terpakai oleh: "${occupyingClip.title.substring(0, 20)}...")`
+                          : `(Tersedia 👍)`;
+
+                        return (
+                          <option key={tr.value} value={tr.value}>
+                            {tr.name} {statusText}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
 
@@ -993,60 +1063,18 @@ export default function AdminDashboard() {
                       <option value="purple">Purple (Premiere / Special)</option>
                     </select>
                   </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-300">Timecode *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="00:23:05:12"
-                      value={tTimecode}
-                      onChange={(e) => setTTimecode(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 font-mono"
-                    />
-                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-300">Teks Periode *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Contoh: 2023–2025"
-                      value={tPeriod}
-                      onChange={(e) => setTPeriod(e.target.value)}
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-300">Tahun Mulai Grid *</label>
-                    <select
-                      value={tStartYear}
-                      onChange={(e) => setTStartYear(parseInt(e.target.value))}
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 font-mono"
-                    >
-                      <option value={2023}>2023 (Kolom 1)</option>
-                      <option value={2024}>2024 (Kolom 2)</option>
-                      <option value={2025}>2025 (Kolom 3)</option>
-                      <option value={2026}>2026 (Kolom 4)</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-semibold text-gray-300">Tahun Selesai Grid *</label>
-                    <select
-                      value={tEndYear}
-                      onChange={(e) => setTEndYear(parseInt(e.target.value))}
-                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 font-mono"
-                    >
-                      <option value={2023}>2023</option>
-                      <option value={2024}>2024</option>
-                      <option value={2025}>2025</option>
-                      <option value={2026}>2026</option>
-                    </select>
-                  </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-300">Timecode *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="00:23:05:12"
+                    value={tTimecode}
+                    onChange={(e) => setTTimecode(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 font-mono"
+                  />
                 </div>
 
                 {/* Description */}
