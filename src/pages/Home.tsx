@@ -6,100 +6,32 @@ import Hero from "../components/Hero";
 import CategorySplit from "../components/CategorySplit";
 import LightboxModal from "../components/LightboxModal";
 import type { WorkItem } from "../data/works";
-
-
-interface TimelineEvent {
-  id: number;
-  title: string;
-  subtitle: string;
-  period: string;
-  desc: string;
-  timecode: string;
-  color: "blue" | "amber" | "purple";
-  colorClass: string;
-  dotClass: string;
-  glowClass: string;
-}
-
-const timelineEvents: TimelineEvent[] = [
-  {
-    id: 1,
-    title: "School Event Documentation",
-    subtitle: "SMKN 53 Jakarta",
-    period: "2023–2025",
-    desc: "Documented various school events through photography and video coverage over a two-year period.",
-    timecode: "00:23:05:12",
-    color: "blue",
-    colorClass: "text-blue-400 border-blue-500/30 bg-blue-500/10",
-    dotClass: "border-blue-500",
-    glowClass: "bg-blue-500/20"
-  },
-  {
-    id: 2,
-    title: "Lokakarya Placemaker Muda",
-    subtitle: "Kami Ruang Ketiga",
-    period: "2025",
-    desc: "Produced visual documentation capturing discussions, activities, and workshop atmosphere.",
-    timecode: "00:25:01:00",
-    color: "amber",
-    colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
-    dotClass: "border-amber-500",
-    glowClass: "bg-amber-500/20"
-  },
-  {
-    id: 3,
-    title: "Behind The Scenes — Operasi Pesta Pora",
-    subtitle: "Imajinari",
-    period: "2025",
-    desc: "Captured behind-the-scenes moments and production activities during the filming process.",
-    timecode: "00:25:02:18",
-    color: "amber",
-    colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
-    dotClass: "border-amber-500",
-    glowClass: "bg-amber-500/20"
-  },
-  {
-    id: 4,
-    title: "Screening & Discussion — SINILAH Batch #3",
-    subtitle: "SINILAH",
-    period: "2025",
-    desc: "Documented screening sessions and public discussions through cinematic event coverage.",
-    timecode: "00:25:03:09",
-    color: "amber",
-    colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
-    dotClass: "border-amber-500",
-    glowClass: "bg-amber-500/20"
-  },
-  {
-    id: 5,
-    title: "Gala Premiere Teman Tegar Maira",
-    subtitle: "Aksa Bumi Langit",
-    period: "2026",
-    desc: "Created visual documentation focused on event moments, interactions, and storytelling elements.",
-    timecode: "00:26:01:24",
-    color: "purple",
-    colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
-    dotClass: "border-purple-500",
-    glowClass: "bg-purple-500/20"
-  },
-  {
-    id: 6,
-    title: "Travel Documentation — Pelepasan Tunas Harapan",
-    subtitle: "Pesona Mahardika",
-    period: "2026",
-    desc: "Produced travel-style visual documentation highlighting journeys, activities, and emotional moments.",
-    timecode: "00:26:02:11",
-    color: "purple",
-    colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
-    dotClass: "border-purple-500",
-    glowClass: "bg-purple-500/20"
-  }
-];
+import {
+  fetchTimelineEvents,
+  defaultTimelineEvents,
+  getColStartClass,
+  getColSpanClass,
+  getClipStyle,
+  type TimelineEventItem
+} from "../services/timelineService";
 
 export default function Home() {
   const navigate = useNavigate();
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
   const [isCvOpen, setIsCvOpen] = useState<boolean>(false);
+  const [eventsList, setEventsList] = useState<TimelineEventItem[]>(defaultTimelineEvents);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetchTimelineEvents().then((data) => {
+      if (isMounted && data && data.length > 0) {
+        setEventsList(data);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Prevent background scroll when CV Modal is open (scroll-lock on both html and body)
   useEffect(() => {
@@ -122,49 +54,48 @@ export default function Home() {
     };
   }, [isCvOpen]);
 
-  const [activeTimelineId, setActiveTimelineId] = useState<number>(1);
+  const [activeTimelineId, setActiveTimelineId] = useState<string | number>(
+    eventsList[0]?.id || 1
+  );
+
+  useEffect(() => {
+    if (eventsList.length > 0 && !eventsList.some((e) => String(e.id) === String(activeTimelineId))) {
+      setActiveTimelineId(eventsList[0].id);
+    }
+  }, [eventsList]);
+
   const [playheadPercent, setPlayheadPercent] = useState<number>(37.5);
   const [isDraggingPlayhead, setIsDraggingPlayhead] = useState(false);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
 
-  const activeEvent = timelineEvents.find((e) => e.id === activeTimelineId) || timelineEvents[0];
+  const activeEvent =
+    eventsList.find((e) => String(e.id) === String(activeTimelineId)) ||
+    eventsList[0] ||
+    defaultTimelineEvents[0];
 
-  const handleSelectClip = (id: number) => {
+  const handleSelectClip = (id: string | number) => {
     setActiveTimelineId(id);
-    switch (id) {
-      case 1:
-        setPlayheadPercent(37.5); // Spans 2023-2025, center around 2024
-        break;
-      case 2:
-      case 3:
-      case 4:
-        setPlayheadPercent(62.5); // 2025 center
-        break;
-      case 5:
-      case 6:
-        setPlayheadPercent(87.5); // 2026 center
-        break;
+    const target = eventsList.find((e) => String(e.id) === String(id));
+    if (target) {
+      const startCol = Math.max(1, Math.min(4, target.start_year - 2022));
+      const endCol = Math.max(startCol, Math.min(4, (target.end_year || target.start_year) - 2022));
+      const centerCol = (startCol + endCol) / 2;
+      setPlayheadPercent((centerCol - 0.5) * 25);
     }
   };
 
-  const getProjectForPercent = (percent: number, currentActiveId: number): number => {
-    if (percent < 25) {
-      return 1; // School Event (2023)
-    } else if (percent < 50) {
-      return 1; // School Event (2024)
-    } else if (percent < 75) {
-      // 2025. Keep current if already in 2025.
-      if ([1, 2, 3, 4].includes(currentActiveId)) {
-        return currentActiveId;
-      }
-      return 3; // Default 2025: BTS - Pesta Pora
-    } else {
-      // 2026. Keep current if already in 2026.
-      if ([5, 6].includes(currentActiveId)) {
-        return currentActiveId;
-      }
-      return 5; // Default 2026: Teman Tegar Maira
+  const getProjectForPercent = (percent: number, currentActiveId: string | number): string | number => {
+    if (!eventsList || eventsList.length === 0) return currentActiveId;
+    const yearIndex = Math.max(0, Math.min(3, Math.floor(percent / 25)));
+    const targetYear = 2023 + yearIndex;
+
+    const currentCover = eventsList.find(e => String(e.id) === String(currentActiveId));
+    if (currentCover && currentCover.start_year <= targetYear && (currentCover.end_year || currentCover.start_year) >= targetYear) {
+      return currentActiveId;
     }
+
+    const match = eventsList.find(e => e.start_year <= targetYear && (e.end_year || e.start_year) >= targetYear);
+    return match ? match.id : (eventsList[0]?.id || currentActiveId);
   };
 
   const handleTimelineInteraction = (clientX: number) => {
@@ -452,121 +383,37 @@ export default function Home() {
                         <div className="absolute -top-1 -left-[4px] w-2.5 h-2.5 bg-red-500 rotate-45 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
                       </motion.div>
 
-                      {/* Timeline Clips Area */}
+                      {/* Dynamic Timeline Clips Area */}
                       <div className="divide-y divide-white/5 select-none relative">
-                        
-                        {/* Track V2 */}
-                        <div className="grid grid-cols-4 w-full h-12 relative bg-neutral-950/10">
-                          {/* Col 3: BTS */}
-                          <div className="col-start-3 p-1 h-full">
-                            <button
-                              onClick={() => handleSelectClip(3)}
-                              className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 3
-                                  ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
-                                  : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
-                              }`}
-                            >
-                              <span className="text-[9px] sm:text-[10px] font-bold truncate">
-                                BTS<span className="hidden md:inline"> - Pesta Pora</span>
-                              </span>
-                              <span className="text-[7.5px] opacity-60 font-mono">2025</span>
-                            </button>
-                          </div>
-                          {/* Col 4: Travel Documentation */}
-                          <div className="col-start-4 p-1 h-full">
-                            <button
-                              onClick={() => handleSelectClip(6)}
-                              className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 6
-                                  ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
-                                  : "bg-purple-950/20 border border-purple-500/10 text-purple-400 hover:bg-purple-950/30"
-                              }`}
-                            >
-                              <span className="text-[9px] sm:text-[10px] font-bold truncate">
-                                <span className="md:hidden">Travel Doc</span>
-                                <span className="hidden md:inline">Travel Documentation</span>
-                              </span>
-                              <span className="text-[7.5px] opacity-60 font-mono">2026</span>
-                            </button>
-                          </div>
-                        </div>
+                        {(['V2', 'V1', 'A1', 'A2'] as const).map((trackName) => {
+                          const trackClips = eventsList.filter((e) => e.track === trackName);
+                          return (
+                            <div key={trackName} className="grid grid-cols-4 w-full h-12 relative bg-neutral-950/10">
+                              {trackClips.map((clip) => {
+                                const startCol = getColStartClass(clip.start_year);
+                                const spanCol = getColSpanClass(clip.start_year, clip.end_year);
+                                const isActive = String(clip.id) === String(activeTimelineId);
+                                const clipStyle = getClipStyle(clip.color, isActive);
 
-                        {/* Track V1 */}
-                        <div className="grid grid-cols-4 w-full h-12 relative bg-neutral-950/10">
-                          {/* Col 1-3: School Event Documentation */}
-                          <div className="col-start-1 col-span-3 p-1 h-full">
-                            <button
-                              onClick={() => handleSelectClip(1)}
-                              className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 1
-                                  ? "bg-blue-500/30 border border-blue-500 text-blue-200 shadow-[0_0_12px_rgba(59,130,246,0.3)] scale-[0.98]"
-                                  : "bg-blue-950/20 border border-blue-500/10 text-blue-400 hover:bg-blue-950/30"
-                              }`}
-                            >
-                              <span className="text-[9px] sm:text-[10px] font-bold truncate">School Event Documentation</span>
-                              <span className="text-[7.5px] opacity-60 font-mono">2023 - 2025</span>
-                            </button>
-                          </div>
-                          {/* Col 4: Teman Tegar Maira */}
-                          <div className="col-start-4 p-1 h-full">
-                            <button
-                              onClick={() => handleSelectClip(5)}
-                              className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 5
-                                  ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
-                                  : "bg-purple-950/20 border border-purple-500/10 text-purple-400 hover:bg-purple-950/30"
-                              }`}
-                            >
-                              <span className="text-[9px] sm:text-[10px] font-bold truncate">
-                                Gala Premiere Teman Tegar<span className="hidden md:inline"> Maira</span>
-                              </span>
-                              <span className="text-[7.5px] opacity-60 font-mono">2026</span>
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Track A1 */}
-                        <div className="grid grid-cols-4 w-full h-12 relative bg-neutral-950/10">
-                          {/* Col 3: Lokakarya Placemaker */}
-                          <div className="col-start-3 p-1 h-full">
-                            <button
-                              onClick={() => handleSelectClip(2)}
-                              className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 2
-                                  ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
-                                  : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
-                              }`}
-                            >
-                              <span className="text-[9px] sm:text-[10px] font-bold truncate">
-                                Placemaker<span className="hidden md:inline"> Muda</span>
-                              </span>
-                              <span className="text-[7.5px] opacity-60 font-mono">2025</span>
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Track A2 */}
-                        <div className="grid grid-cols-4 w-full h-12 relative bg-neutral-950/10">
-                          {/* Col 3: SINILAH Batch #3 */}
-                          <div className="col-start-3 p-1 h-full">
-                            <button
-                              onClick={() => handleSelectClip(4)}
-                              className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${
-                                activeTimelineId === 4
-                                  ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
-                                  : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30"
-                              }`}
-                            >
-                              <span className="text-[9px] sm:text-[10px] font-bold truncate">
-                                SINILAH<span className="hidden md:inline"> Batch #3</span>
-                              </span>
-                              <span className="text-[7.5px] opacity-60 font-mono">2025</span>
-                            </button>
-                          </div>
-                        </div>
-
-
+                                return (
+                                  <div key={clip.id} className={`${startCol} ${spanCol} p-1 h-full`}>
+                                    <button
+                                      onClick={() => handleSelectClip(clip.id)}
+                                      className={`w-full h-full rounded-lg px-2 text-left flex flex-col justify-center transition-all cursor-pointer ${clipStyle}`}
+                                    >
+                                      <span className="text-[9px] sm:text-[10px] font-bold truncate">
+                                        {clip.title}
+                                      </span>
+                                      <span className="text-[7.5px] opacity-60 font-mono">
+                                        {clip.period}
+                                      </span>
+                                    </button>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
