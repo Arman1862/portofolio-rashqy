@@ -1040,7 +1040,7 @@ export default function AdminDashboard() {
 
                         const statusText = occupyingClip
                           ? `(Terpakai oleh: "${occupyingClip.title.substring(0, 20)}...")`
-                          : `(Tersedia 👍)`;
+                          : `(Tersedia)`;
 
                         return (
                           <option key={tr.value} value={tr.value}>
