@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Film, Camera, Play, Grid, ArrowLeft, Scissors } from "lucide-react";
-import { works } from "../data/works";
+import { works as defaultWorks } from "../data/works";
+import { fetchWorks } from "../services/worksService";
 import LightboxModal from "../components/LightboxModal";
 import ImageWithLoader from "../components/ImageWithLoader";
 import type { WorkItem } from "../data/works";
@@ -10,10 +11,23 @@ import type { WorkItem } from "../data/works";
 export default function WorksPage() {
   const { hash } = useLocation();
   const [selectedWork, setSelectedWork] = useState<WorkItem | null>(null);
+  const [worksList, setWorksList] = useState<WorkItem[]>(defaultWorks);
 
-  const filmWorks = works.filter((w) => w.category === "film");
-  const editingWorks = works.filter((w) => w.category === "editing");
-  const photoWorks = works.filter((w) => w.category === "photo");
+  useEffect(() => {
+    let isMounted = true;
+    fetchWorks().then((data) => {
+      if (isMounted) {
+        setWorksList(data);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const filmWorks = worksList.filter((w) => w.category === "film");
+  const editingWorks = worksList.filter((w) => w.category === "editing");
+  const photoWorks = worksList.filter((w) => w.category === "photo");
 
   // Hash-based smooth scroll logic
   useEffect(() => {

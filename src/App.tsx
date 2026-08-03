@@ -4,16 +4,36 @@ import { Instagram, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Home from "./pages/Home";
 import WorksPage from "./pages/WorksPage";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const currentPath = location.pathname + location.hash;
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   const isHomeActive = currentPath === "/" || currentPath === "";
   const isFilmsActive = currentPath === "/works#films" || (location.pathname === "/works" && !location.hash);
   const isEditingActive = currentPath === "/works#editing";
   const isPhotoActive = currentPath === "/works#photography";
+
+  if (isAdminRoute) {
+    return (
+      <Routes>
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/admin/login" element={<AdminLogin />} />
+      </Routes>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground relative bg-grain pb-1">
