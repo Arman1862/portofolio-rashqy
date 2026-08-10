@@ -12,7 +12,15 @@ import {
   createTimelineEvent,
   updateTimelineEvent,
   deleteTimelineEvent,
-  type TimelineEventItem
+  fetchTimelineTracks,
+  createTimelineTrack,
+  updateTimelineTrack,
+  deleteTimelineTrack,
+  getTimelineColorClasses,
+  type TimelineEventItem,
+  type TimelineTrackItem,
+  type TrackColorType,
+  type TrackIconType
 } from "../../services/timelineService";
 import { parseMediaUrl } from "../../utils/driveParser";
 import {
@@ -73,13 +81,23 @@ export default function AdminDashboard() {
   const [tSubtitle, setTSubtitle] = useState("");
   const [tPeriod, setTPeriod] = useState("");
   const [tTimecode, setTTimecode] = useState("00:25:00:00");
-  const [tColor, setTColor] = useState<'blue' | 'amber' | 'purple'>("blue");
-  const [tTrack, setTTrack] = useState<'V2' | 'V1' | 'A1' | 'A2'>("V1");
+  const [tColor, setTColor] = useState<string>("blue");
+  const [tTrack, setTTrack] = useState<string>("V1");
   const [tStartYear, setTStartYear] = useState<number>(2025);
   const [tEndYear, setTEndYear] = useState<number>(2025);
   const [tIsFeatured, setTIsFeatured] = useState<boolean>(true);
   const [tColumnSlot, setTColumnSlot] = useState<number>(1);
   const [tDescription, setTDescription] = useState("");
+
+  // Timeline Track Layer State
+  const [tracksList, setTracksList] = useState<TimelineTrackItem[]>([]);
+  const [isTrackModalOpen, setIsTrackModalOpen] = useState<boolean>(false);
+  const [editingTrackItem, setEditingTrackItem] = useState<TimelineTrackItem | null>(null);
+  const [savingTrack, setSavingTrack] = useState<boolean>(false);
+  const [trKey, setTrKey] = useState("");
+  const [trName, setTrName] = useState("");
+  const [trColor, setTrColor] = useState<TrackColorType>("blue");
+  const [trIcon, setTrIcon] = useState<TrackIconType>("film");
 
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
 
@@ -118,7 +136,8 @@ export default function AdminDashboard() {
       const data = await fetchWorks();
       setWorksList(data);
     } catch (err: any) {
-      showToast('error', 'Gagal memuat data karya dari database');
+      console.error(err);
+      showToast('error', 'Gagal memuat data karya dari Supabase.');
     } finally {
       setLoadingWorks(false);
     }
@@ -128,10 +147,15 @@ export default function AdminDashboard() {
   const loadTimelineData = async () => {
     setLoadingTimeline(true);
     try {
-      const data = await fetchTimelineEvents();
-      setTimelineList(data);
+      const [eventsData, tracksData] = await Promise.all([
+        fetchTimelineEvents(),
+        fetchTimelineTracks()
+      ]);
+      setTimelineList(eventsData);
+      setTracksList(tracksData);
     } catch (err: any) {
-      showToast('error', 'Gagal memuat sequence timeline dari database');
+      console.error(err);
+      showToast('error', 'Gagal memuat data sequence timeline dari Supabase.');
     } finally {
       setLoadingTimeline(false);
     }
@@ -141,6 +165,76 @@ export default function AdminDashboard() {
     loadWorksData();
     loadTimelineData();
   }, []);
+
+  // --- TRACK LAYER HANDLERS ---
+  const handleOpenAddTrackModal = () => {
+    setEditingTrackItem(null);
+    setTrKey("");
+    setTrName("");
+    setTrColor("blue");
+    setTrIcon("film");
+    setIsTrackModalOpen(true);
+  };
+
+  const handleOpenEditTrackModal = (item: TimelineTrackItem) => {
+    setEditingTrackItem(item);
+    setTrKey(item.track_key);
+    setTrName(item.name);
+    setTrColor(item.color);
+    setTrIcon(item.icon);
+    setIsTrackModalOpen(true);
+  };
+
+  const handleSaveTrack = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!trKey || !trName) {
+      showToast('error', 'Kunci Layer (misal: V3) dan Nama Layer (misal: VFX) wajib diisi.');
+      return;
+    }
+
+    setSavingTrack(true);
+    try {
+      if (editingTrackItem) {
+        await updateTimelineTrack(editingTrackItem.id, {
+          track_key: trKey.toUpperCase(),
+          name: trName.toUpperCase(),
+          color: trColor,
+          icon: trIcon
+        });
+        showToast('success', 'Track Layer berhasil diperbarui!');
+      } else {
+        await createTimelineTrack({
+          track_key: trKey.toUpperCase(),
+          name: trName.toUpperCase(),
+          color: trColor,
+          icon: trIcon,
+          display_order: tracksList.length + 1
+        });
+        showToast('success', 'Track Layer baru berhasil ditambahkan!');
+      }
+
+      setIsTrackModalOpen(false);
+      loadTimelineData();
+    } catch (err: any) {
+      console.error(err);
+      showToast('error', err.message || 'Gagal menyimpan track layer.');
+    } finally {
+      setSavingTrack(false);
+    }
+  };
+
+  const handleDeleteTrack = async (id: string, key: string) => {
+    if (!window.confirm(`Apakah Anda yakin ingin menghapus Track Layer "${key}"?`)) return;
+
+    try {
+      await deleteTimelineTrack(id);
+      showToast('success', 'Track Layer berhasil dihapus!');
+      loadTimelineData();
+    } catch (err: any) {
+      console.error(err);
+      showToast('error', err.message || 'Gagal menghapus track layer.');
+    }
+  };
 
   const showToast = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message });
@@ -623,17 +717,80 @@ export default function AdminDashboard() {
                   <span>Premiere Pro NLE Sequence Timeline Events</span>
                 </h2>
                 <p className="text-xs text-gray-400 mt-1">
-                  Kelola event klip yang muncul di timeline visual beranda (`Home.tsx`). Klip diatur berdasarkan Layer Track (`V2: BTS`, `V1: MAIN`, `A1: AUD`, `A2: DIA`) dan span tahun (`2023–2026`).
+                  Kelola track layer kustom dan event klip yang muncul di timeline visual beranda (`Home.tsx`) dan halaman fullscreen (`/timeline`).
                 </p>
               </div>
 
-              <button
-                onClick={loadTimelineData}
-                className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-xs font-semibold flex items-center gap-2 self-start md:self-auto cursor-pointer"
-              >
-                <RefreshCw size={14} className={loadingTimeline ? "animate-spin" : ""} />
-                <span>Refresh Timeline</span>
-              </button>
+              <div className="flex items-center gap-2 self-start md:self-auto">
+                <button
+                  onClick={handleOpenAddTrackModal}
+                  className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-neutral-950 font-bold text-xs flex items-center gap-1.5 transition-all shadow-lg shadow-amber-500/20 cursor-pointer"
+                >
+                  <Plus size={14} />
+                  <span>Tambah Layer Track Baru</span>
+                </button>
+                <button
+                  onClick={loadTimelineData}
+                  className="px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-xs font-semibold flex items-center gap-2 cursor-pointer"
+                >
+                  <RefreshCw size={14} className={loadingTimeline ? "animate-spin" : ""} />
+                  <span>Refresh</span>
+                </button>
+              </div>
+            </div>
+
+            {/* TRACK LAYER MANAGEMENT SECTION */}
+            <div className="bg-neutral-900/40 border border-white/10 p-5 rounded-2xl space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                    <Layers size={16} className="text-blue-400" />
+                    <span>Daftar Track Layer Kustom ({tracksList.length})</span>
+                  </h3>
+                  <p className="text-[11px] text-gray-400">
+                    Konfigurasi layer untuk Halaman Fullscreen `/timeline`. (Homepage tetap menampilkan 4 layer utama).
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                {tracksList.map((track) => {
+                  const colorStyles = getTimelineColorClasses(track.color);
+                  return (
+                    <div
+                      key={track.id}
+                      className="p-3.5 rounded-xl bg-neutral-950 border border-white/10 flex items-center justify-between gap-2"
+                    >
+                      <div className="space-y-1 overflow-hidden">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-[10px] font-mono px-2 py-0.5 rounded border font-bold ${colorStyles.colorClass}`}>
+                            {track.track_key}
+                          </span>
+                          <span className="text-xs font-bold text-white truncate">{track.name}</span>
+                        </div>
+                        <p className="text-[10px] font-mono text-gray-500">Ikon: {track.icon} | Order: {track.display_order}</p>
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => handleOpenEditTrackModal(track)}
+                          className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 transition-colors"
+                          title="Edit Layer"
+                        >
+                          <Edit size={13} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteTrack(track.id, track.track_key)}
+                          className="p-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 transition-colors"
+                          title="Hapus Layer"
+                        >
+                          <Trash2 size={13} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Timeline Events List Grouped by Track */}
@@ -1028,36 +1185,18 @@ export default function AdminDashboard() {
                   <div className="space-y-1.5 sm:col-span-2">
                     <label className="text-xs font-semibold text-gray-300 flex items-center justify-between">
                       <span>Track Layer (Posisi Timeline) *</span>
-                      <span className="text-[10px] font-mono text-blue-400">Status Tahun {tStartYear}{tEndYear !== tStartYear ? `–${tEndYear}` : ''}</span>
+                      <span className="text-[10px] font-mono text-blue-400">Layer Aktif: {tracksList.length}</span>
                     </label>
                     <select
                       value={tTrack}
-                      onChange={(e) => setTTrack(e.target.value as any)}
+                      onChange={(e) => setTTrack(e.target.value)}
                       className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500"
                     >
-                      {[
-                        { value: 'V1', name: 'Video Layer 1 (V1 - Utama)' },
-                        { value: 'V2', name: 'Video Layer 2 (V2 - BTS / Special)' },
-                        { value: 'A1', name: 'Audio Layer 1 (A1 - Workshop / Audio)' },
-                        { value: 'A2', name: 'Audio Layer 2 (A2 - Dialogue / Discussion)' }
-                      ].map((tr) => {
-                        const occupyingClip = timelineList.find((item) => {
-                          if (editingTimelineItem && String(item.id) === String(editingTimelineItem.id)) return false;
-                          if (item.track !== tr.value) return false;
-                          const itemEnd = item.end_year || item.start_year;
-                          return item.start_year <= tEndYear && itemEnd >= tStartYear;
-                        });
-
-                        const statusText = occupyingClip
-                          ? `(Terpakai oleh: "${occupyingClip.title.substring(0, 20)}...")`
-                          : `(Tersedia)`;
-
-                        return (
-                          <option key={tr.value} value={tr.value}>
-                            {tr.name} {statusText}
-                          </option>
-                        );
-                      })}
+                      {tracksList.map((tr) => (
+                        <option key={tr.id} value={tr.track_key}>
+                          {tr.track_key}: {tr.name} ({tr.color})
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -1065,12 +1204,16 @@ export default function AdminDashboard() {
                     <label className="text-xs font-semibold text-gray-300">Warna Aksen *</label>
                     <select
                       value={tColor}
-                      onChange={(e) => setTColor(e.target.value as any)}
+                      onChange={(e) => setTColor(e.target.value)}
                       className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500"
                     >
-                      <option value="blue">Blue (V1 Main)</option>
+                      <option value="blue">Blue (Primary)</option>
                       <option value="amber">Amber (BTS / Audio)</option>
-                      <option value="purple">Purple (Premiere / Special)</option>
+                      <option value="purple">Purple (Special)</option>
+                      <option value="emerald">Emerald (Green)</option>
+                      <option value="rose">Rose (Red/Pink)</option>
+                      <option value="cyan">Cyan (Light Blue)</option>
+                      <option value="indigo">Indigo (Deep Purple)</option>
                     </select>
                   </div>
                 </div>
@@ -1114,12 +1257,11 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                {/* Description */}
                 <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-gray-300">Deskripsi Clip</label>
+                  <label className="text-xs font-semibold text-gray-300">Deskripsi Singkat Project</label>
                   <textarea
                     rows={3}
-                    placeholder="Deskripsi singkat mengenai aktivitas dokumentasi..."
+                    placeholder="Deskripsi singkat kegiatan, behind the scenes, atau catatan penting..."
                     value={tDescription}
                     onChange={(e) => setTDescription(e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 leading-relaxed"
@@ -1146,6 +1288,124 @@ export default function AdminDashboard() {
                       <>
                         <Save size={14} />
                         <span>Simpan Timeline Clip</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* --- MODAL FORM: MANAJEMEN TRACK LAYER --- */}
+      <AnimatePresence>
+        {isTrackModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-neutral-900 border border-white/10 rounded-2xl max-w-md w-full p-6 space-y-6 shadow-2xl"
+            >
+              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <Layers size={18} className="text-amber-400" />
+                  <span>{editingTrackItem ? "Edit Track Layer" : "Tambah Track Layer Baru"}</span>
+                </h3>
+                <button
+                  onClick={() => setIsTrackModalOpen(false)}
+                  className="p-1 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveTrack} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-300">Kunci Layer (Unique Track Key) *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Contoh: V3 / A3 / FX1 / COLOR"
+                    value={trKey}
+                    onChange={(e) => setTrKey(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 font-mono uppercase"
+                  />
+                  <p className="text-[10px] text-gray-500 font-mono">Kode singkat layer (misal V3 untuk Video 3, A3 untuk Audio 3).</p>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-gray-300">Nama Label Layer *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Contoh: VFX / DIALOGUE / MUSIC / GRAPHICS"
+                    value={trName}
+                    onChange={(e) => setTrName(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500 font-mono uppercase"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-gray-300">Warna Aksen *</label>
+                    <select
+                      value={trColor}
+                      onChange={(e) => setTrColor(e.target.value as TrackColorType)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500"
+                    >
+                      <option value="blue">Blue</option>
+                      <option value="amber">Amber</option>
+                      <option value="purple">Purple</option>
+                      <option value="emerald">Emerald</option>
+                      <option value="rose">Rose</option>
+                      <option value="cyan">Cyan</option>
+                      <option value="indigo">Indigo</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-xs font-semibold text-gray-300">Ikon Track *</label>
+                    <select
+                      value={trIcon}
+                      onChange={(e) => setTrIcon(e.target.value as TrackIconType)}
+                      className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500"
+                    >
+                      <option value="film">Film / Video</option>
+                      <option value="audio">Audio / Sound</option>
+                      <option value="sparkles">Sparkles / VFX</option>
+                      <option value="palette">Palette / Color</option>
+                      <option value="camera">Camera / Photo</option>
+                      <option value="music">Music / BGM</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setIsTrackModalOpen(false)}
+                    className="px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-gray-300 text-xs font-semibold hover:bg-white/10 transition-colors"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={savingTrack}
+                    className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-neutral-950 text-xs font-bold flex items-center gap-2 shadow-lg shadow-amber-500/20 transition-all cursor-pointer"
+                  >
+                    {savingTrack ? (
+                      <span className="w-4 h-4 border-2 border-neutral-950/30 border-t-neutral-950 rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <Save size={14} />
+                        <span>Simpan Track Layer</span>
                       </>
                     )}
                   </button>

@@ -1,6 +1,25 @@
 import { supabase, isSupabaseConfigured } from "../lib/supabase";
 import { RASQHY_TENANT_ID } from "./worksService";
 
+export type TrackColorType = 'blue' | 'amber' | 'purple' | 'emerald' | 'rose' | 'cyan' | 'indigo';
+export type TrackIconType = 'film' | 'audio' | 'sparkles' | 'palette' | 'camera' | 'music';
+
+export interface TimelineTrackItem {
+  id: string;
+  track_key: string;
+  name: string;
+  color: TrackColorType;
+  icon: TrackIconType;
+  display_order: number;
+}
+
+export const defaultTimelineTracks: TimelineTrackItem[] = [
+  { id: '1', track_key: 'V2', name: 'BTS', color: 'amber', icon: 'film', display_order: 1 },
+  { id: '2', track_key: 'V1', name: 'MAIN', color: 'blue', icon: 'film', display_order: 2 },
+  { id: '3', track_key: 'A1', name: 'AUD', color: 'emerald', icon: 'audio', display_order: 3 },
+  { id: '4', track_key: 'A2', name: 'DIA', color: 'purple', icon: 'audio', display_order: 4 },
+];
+
 export interface TimelineEventItem {
   id: string | number;
   title: string;
@@ -8,8 +27,8 @@ export interface TimelineEventItem {
   period: string;
   desc: string;
   timecode: string;
-  color: 'blue' | 'amber' | 'purple';
-  track: 'V2' | 'V1' | 'A1' | 'A2';
+  color: string;
+  track: string;
   start_year: number;
   end_year?: number;
   is_featured: boolean;
@@ -131,27 +150,23 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
   }
 ];
 
-export function getTimelineColorClasses(color: 'blue' | 'amber' | 'purple') {
+export function getTimelineColorClasses(color: string) {
   switch (color) {
     case 'amber':
-      return {
-        colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
-        dotClass: "border-amber-500",
-        glowClass: "bg-amber-500/20"
-      };
+      return { colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10", dotClass: "border-amber-500", glowClass: "bg-amber-500/20" };
     case 'purple':
-      return {
-        colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
-        dotClass: "border-purple-500",
-        glowClass: "bg-purple-500/20"
-      };
+      return { colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10", dotClass: "border-purple-500", glowClass: "bg-purple-500/20" };
+    case 'emerald':
+      return { colorClass: "text-emerald-400 border-emerald-500/30 bg-emerald-500/10", dotClass: "border-emerald-500", glowClass: "bg-emerald-500/20" };
+    case 'rose':
+      return { colorClass: "text-rose-400 border-rose-500/30 bg-rose-500/10", dotClass: "border-rose-500", glowClass: "bg-rose-500/20" };
+    case 'cyan':
+      return { colorClass: "text-cyan-400 border-cyan-500/30 bg-cyan-500/10", dotClass: "border-cyan-500", glowClass: "bg-cyan-500/20" };
+    case 'indigo':
+      return { colorClass: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10", dotClass: "border-indigo-500", glowClass: "bg-indigo-500/20" };
     case 'blue':
     default:
-      return {
-        colorClass: "text-blue-400 border-blue-500/30 bg-blue-500/10",
-        dotClass: "border-blue-500",
-        glowClass: "bg-blue-500/20"
-      };
+      return { colorClass: "text-blue-400 border-blue-500/30 bg-blue-500/10", dotClass: "border-blue-500", glowClass: "bg-blue-500/20" };
   }
 }
 
@@ -180,19 +195,37 @@ export function getColSpanClass(startYear: number, endYear?: number, columnSlot?
   }
 }
 
-export function getClipStyle(color: 'blue' | 'amber' | 'purple', isActive: boolean): string {
-  if (color === 'amber') {
-    return isActive
-      ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
-      : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30";
-  } else if (color === 'purple') {
-    return isActive
-      ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
-      : "bg-purple-950/20 border border-purple-500/10 text-purple-400 hover:bg-purple-950/30";
-  } else {
-    return isActive
-      ? "bg-blue-500/30 border border-blue-500 text-blue-200 shadow-[0_0_12px_rgba(59,130,246,0.3)] scale-[0.98]"
-      : "bg-blue-950/20 border border-blue-500/10 text-blue-400 hover:bg-blue-950/30";
+export function getClipStyle(color: string, isActive: boolean): string {
+  switch (color) {
+    case 'amber':
+      return isActive
+        ? "bg-amber-500/30 border border-amber-500 text-amber-200 shadow-[0_0_12px_rgba(245,158,11,0.3)] scale-[0.98]"
+        : "bg-amber-950/20 border border-amber-500/10 text-amber-400 hover:bg-amber-950/30";
+    case 'purple':
+      return isActive
+        ? "bg-purple-500/30 border border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)] scale-[0.98]"
+        : "bg-purple-950/20 border border-purple-500/10 text-purple-400 hover:bg-purple-950/30";
+    case 'emerald':
+      return isActive
+        ? "bg-emerald-500/30 border border-emerald-500 text-emerald-200 shadow-[0_0_12px_rgba(16,185,129,0.3)] scale-[0.98]"
+        : "bg-emerald-950/20 border border-emerald-500/10 text-emerald-400 hover:bg-emerald-950/30";
+    case 'rose':
+      return isActive
+        ? "bg-rose-500/30 border border-rose-500 text-rose-200 shadow-[0_0_12px_rgba(244,63,94,0.3)] scale-[0.98]"
+        : "bg-rose-950/20 border border-rose-500/10 text-rose-400 hover:bg-rose-950/30";
+    case 'cyan':
+      return isActive
+        ? "bg-cyan-500/30 border border-cyan-500 text-cyan-200 shadow-[0_0_12px_rgba(6,182,212,0.3)] scale-[0.98]"
+        : "bg-cyan-950/20 border border-cyan-500/10 text-cyan-400 hover:bg-cyan-950/30";
+    case 'indigo':
+      return isActive
+        ? "bg-indigo-500/30 border border-indigo-500 text-indigo-200 shadow-[0_0_12px_rgba(99,102,241,0.3)] scale-[0.98]"
+        : "bg-indigo-950/20 border border-indigo-500/10 text-indigo-400 hover:bg-indigo-950/30";
+    case 'blue':
+    default:
+      return isActive
+        ? "bg-blue-500/30 border border-blue-500 text-blue-200 shadow-[0_0_12px_rgba(59,130,246,0.3)] scale-[0.98]"
+        : "bg-blue-950/20 border border-blue-500/10 text-blue-400 hover:bg-blue-950/30";
   }
 }
 
@@ -260,8 +293,8 @@ export async function createTimelineEvent(item: {
   period: string;
   description: string;
   timecode: string;
-  color: 'blue' | 'amber' | 'purple';
-  track: 'V2' | 'V1' | 'A1' | 'A2';
+  color: string;
+  track: string;
   start_year: number;
   end_year?: number;
   is_featured?: boolean;
@@ -305,8 +338,8 @@ export async function updateTimelineEvent(
     period: string;
     description: string;
     timecode: string;
-    color: 'blue' | 'amber' | 'purple';
-    track: 'V2' | 'V1' | 'A1' | 'A2';
+    color: string;
+    track: string;
     start_year: number;
     end_year: number;
     is_featured: boolean;
@@ -337,6 +370,108 @@ export async function deleteTimelineEvent(id: string | number) {
 
   const { error } = await supabase
     .from("timeline_events")
+    .delete()
+    .eq("id", id);
+
+  if (error) throw error;
+  return true;
+}
+
+/**
+ * Fetches all track layers from Supabase.
+ */
+export async function fetchTimelineTracks(): Promise<TimelineTrackItem[]> {
+  if (!isSupabaseConfigured || !supabase) {
+    return defaultTimelineTracks;
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from("timeline_tracks")
+      .select("*")
+      .order("display_order", { ascending: true });
+
+    if (error || !data || data.length === 0) {
+      return defaultTimelineTracks;
+    }
+
+    return data.map((t: any) => ({
+      id: t.id,
+      track_key: t.track_key,
+      name: t.name,
+      color: t.color || 'blue',
+      icon: t.icon || 'film',
+      display_order: t.display_order || 0
+    }));
+  } catch (err) {
+    console.error("[TimelineService] Error fetching tracks:", err);
+    return defaultTimelineTracks;
+  }
+}
+
+/**
+ * Creates a new track layer in Supabase.
+ */
+export async function createTimelineTrack(track: {
+  track_key: string;
+  name: string;
+  color: TrackColorType;
+  icon: TrackIconType;
+  display_order?: number;
+}) {
+  if (!supabase) throw new Error("Supabase is not configured.");
+
+  const { data, error } = await supabase
+    .from("timeline_tracks")
+    .insert({
+      tenant_id: RASQHY_TENANT_ID,
+      track_key: track.track_key.toUpperCase(),
+      name: track.name.toUpperCase(),
+      color: track.color,
+      icon: track.icon,
+      display_order: track.display_order || 0
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Updates an existing track layer in Supabase.
+ */
+export async function updateTimelineTrack(
+  id: string,
+  track: Partial<{
+    track_key: string;
+    name: string;
+    color: TrackColorType;
+    icon: TrackIconType;
+    display_order: number;
+  }>
+) {
+  if (!supabase) throw new Error("Supabase is not configured.");
+
+  const { data, error } = await supabase
+    .from("timeline_tracks")
+    .update({ ...track, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Deletes a track layer from Supabase.
+ */
+export async function deleteTimelineTrack(id: string) {
+  if (!supabase) throw new Error("Supabase is not configured.");
+
+  const { error } = await supabase
+    .from("timeline_tracks")
     .delete()
     .eq("id", id);
 

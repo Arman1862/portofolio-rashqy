@@ -11,39 +11,51 @@ import {
   Calendar,
   Clock,
   Layers,
-  Search
+  Search,
+  Sparkles,
+  Palette,
+  Camera,
+  Music
 } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   fetchTimelineEvents,
+  fetchTimelineTracks,
   defaultTimelineEvents,
+  defaultTimelineTracks,
   getColStartClass,
   getColSpanClass,
   getClipStyle,
-  type TimelineEventItem
+  getTimelineColorClasses,
+  type TimelineEventItem,
+  type TimelineTrackItem
 } from "../services/timelineService";
 
 export default function TimelinePage() {
   const navigate = useNavigate();
   const [eventsList, setEventsList] = useState<TimelineEventItem[]>(defaultTimelineEvents);
+  const [tracksList, setTracksList] = useState<TimelineTrackItem[]>(defaultTimelineTracks);
   const [activeTimelineId, setActiveTimelineId] = useState<string | number>(
     defaultTimelineEvents[0]?.id || 1
   );
   const [isPlaying, setIsPlaying] = useState(false);
   const [playheadPercent, setPlayheadPercent] = useState<number>(25);
   const [isDraggingPlayhead, setIsDraggingPlayhead] = useState(false);
-  const [activeTrackFilter, setActiveTrackFilter] = useState<'ALL' | 'V2' | 'V1' | 'A1' | 'A2'>('ALL');
+  const [activeTrackFilter, setActiveTrackFilter] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState("");
   const timelineContainerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch all timeline events from Supabase
+  // Fetch all timeline events & tracks from Supabase
   useEffect(() => {
     let isMounted = true;
-    fetchTimelineEvents().then((data) => {
+    Promise.all([fetchTimelineEvents(), fetchTimelineTracks()]).then(([eventsData, tracksData]) => {
       if (isMounted) {
-        if (data && data.length > 0) {
-          setEventsList(data);
-          setActiveTimelineId(data[0].id);
+        if (eventsData && eventsData.length > 0) {
+          setEventsList(eventsData);
+          setActiveTimelineId(eventsData[0].id);
+        }
+        if (tracksData && tracksData.length > 0) {
+          setTracksList(tracksData);
         }
       }
     });
@@ -289,17 +301,17 @@ export default function TimelinePage() {
             </div>
 
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] font-mono">
-              {(['ALL', 'V2', 'V1', 'A1', 'A2'] as const).map((tr) => (
+              {['ALL', ...tracksList.map(t => t.track_key)].map((trKey) => (
                 <button
-                  key={tr}
-                  onClick={() => setActiveTrackFilter(tr)}
+                  key={trKey}
+                  onClick={() => setActiveTrackFilter(trKey)}
                   className={`px-3 py-1 rounded-lg border font-bold transition-all cursor-pointer ${
-                    activeTrackFilter === tr
+                    activeTrackFilter === trKey
                       ? 'bg-blue-500 text-white border-blue-400 shadow-md shadow-blue-500/30'
                       : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'
                   }`}
                 >
-                  {tr}
+                  {trKey}
                 </button>
               ))}
             </div>
@@ -317,7 +329,7 @@ export default function TimelinePage() {
                 SEQUENCE TIMELINE CANVAS
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 bg-neutral-950 rounded border border-white/10 text-gray-400 font-bold">
-                {filteredEvents.length} Clips
+                {filteredEvents.length} Clips ({tracksList.length} Tracks)
               </span>
             </div>
 
@@ -331,53 +343,27 @@ export default function TimelinePage() {
             
             {/* Left Track Control Labels */}
             <div className="w-24 md:w-32 flex flex-col pt-8 bg-neutral-950/80 border-r border-white/10 font-mono text-[9px] md:text-[10px] font-semibold text-gray-400 divide-y divide-white/5 select-none shrink-0">
-              {/* Track V2 */}
-              <div className="h-16 flex flex-col justify-center px-3 space-y-1 bg-neutral-950/40">
-                <span className="text-white font-bold flex items-center gap-1.5">
-                  <Film size={12} className="text-amber-400" /> V2: BTS
-                </span>
-                <div className="flex gap-1 text-[8px]">
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-amber-400 border border-amber-500/20">S</span>
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500">M</span>
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500"><Lock size={8} /></span>
-                </div>
-              </div>
-
-              {/* Track V1 */}
-              <div className="h-16 flex flex-col justify-center px-3 space-y-1 bg-neutral-950/40">
-                <span className="text-white font-bold flex items-center gap-1.5">
-                  <Film size={12} className="text-blue-400" /> V1: MAIN
-                </span>
-                <div className="flex gap-1 text-[8px]">
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-blue-400 border border-blue-500/20">S</span>
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500">M</span>
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500"><Lock size={8} /></span>
-                </div>
-              </div>
-
-              {/* Track A1 */}
-              <div className="h-16 flex flex-col justify-center px-3 space-y-1 bg-neutral-950/40">
-                <span className="text-white font-bold flex items-center gap-1.5">
-                  <Volume2 size={12} className="text-emerald-400" /> A1: AUD
-                </span>
-                <div className="flex gap-1 text-[8px]">
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-emerald-400 border border-emerald-500/20">S</span>
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500">M</span>
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500"><Lock size={8} /></span>
-                </div>
-              </div>
-
-              {/* Track A2 */}
-              <div className="h-16 flex flex-col justify-center px-3 space-y-1 bg-neutral-950/40">
-                <span className="text-white font-bold flex items-center gap-1.5">
-                  <Volume2 size={12} className="text-purple-400" /> A2: DIA
-                </span>
-                <div className="flex gap-1 text-[8px]">
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-purple-400 border border-purple-500/20">S</span>
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500">M</span>
-                  <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500"><Lock size={8} /></span>
-                </div>
-              </div>
+              {tracksList.map((track) => {
+                const colorStyles = getTimelineColorClasses(track.color);
+                return (
+                  <div key={track.id} className="h-16 flex flex-col justify-center px-3 space-y-1 bg-neutral-950/40">
+                    <span className="text-white font-bold flex items-center gap-1.5 truncate">
+                      {track.icon === 'audio' ? <Volume2 size={12} className={colorStyles.colorClass.split(' ')[0]} /> :
+                       track.icon === 'sparkles' ? <Sparkles size={12} className={colorStyles.colorClass.split(' ')[0]} /> :
+                       track.icon === 'palette' ? <Palette size={12} className={colorStyles.colorClass.split(' ')[0]} /> :
+                       track.icon === 'camera' ? <Camera size={12} className={colorStyles.colorClass.split(' ')[0]} /> :
+                       track.icon === 'music' ? <Music size={12} className={colorStyles.colorClass.split(' ')[0]} /> :
+                       <Film size={12} className={colorStyles.colorClass.split(' ')[0]} />}
+                      {track.track_key}: {track.name}
+                    </span>
+                    <div className="flex gap-1 text-[8px]">
+                      <span className={`px-1.5 py-0.5 rounded bg-neutral-900 border ${colorStyles.colorClass}`}>S</span>
+                      <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500">M</span>
+                      <span className="px-1.5 py-0.5 rounded bg-neutral-900 text-gray-500"><Lock size={8} /></span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Right Interactive Track Canvas */}
@@ -408,15 +394,15 @@ export default function TimelinePage() {
 
                 {/* Track Clips Grid Area */}
                 <div className="divide-y divide-white/5 relative">
-                  {(['V2', 'V1', 'A1', 'A2'] as const).map((trackName) => {
-                    const trackClips = filteredEvents.filter((e) => e.track === trackName);
+                  {tracksList.map((track) => {
+                    const trackClips = filteredEvents.filter((e) => e.track === track.track_key);
                     return (
-                      <div key={trackName} className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/20">
+                      <div key={track.id} className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/20">
                         {trackClips.map((clip) => {
                           const startCol = getColStartClass(clip.start_year, clip.column_slot);
                           const spanCol = getColSpanClass(clip.start_year, clip.end_year, clip.column_slot);
                           const isActive = String(clip.id) === String(activeTimelineId);
-                          const clipStyle = getClipStyle(clip.color, isActive);
+                          const clipStyle = getClipStyle(clip.color || track.color, isActive);
 
                           return (
                             <div key={clip.id} className={`${startCol} ${spanCol} p-1.5 h-full`}>
