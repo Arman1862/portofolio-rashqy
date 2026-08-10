@@ -4,6 +4,7 @@ import { Instagram, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Home from "./pages/Home";
 import WorksPage from "./pages/WorksPage";
+import TimelinePage from "./pages/TimelinePage";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -180,6 +181,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/works" element={<WorksPage />} />
+          <Route path="/timeline" element={<TimelinePage />} />
         </Routes>
       </main>
 

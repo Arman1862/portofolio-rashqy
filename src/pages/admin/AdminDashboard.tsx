@@ -77,6 +77,8 @@ export default function AdminDashboard() {
   const [tTrack, setTTrack] = useState<'V2' | 'V1' | 'A1' | 'A2'>("V1");
   const [tStartYear, setTStartYear] = useState<number>(2025);
   const [tEndYear, setTEndYear] = useState<number>(2025);
+  const [tIsFeatured, setTIsFeatured] = useState<boolean>(true);
+  const [tColumnSlot, setTColumnSlot] = useState<number>(1);
   const [tDescription, setTDescription] = useState("");
 
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
@@ -237,6 +239,8 @@ export default function AdminDashboard() {
     setTTrack("V1");
     setTStartYear(2025);
     setTEndYear(2025);
+    setTIsFeatured(true);
+    setTColumnSlot(1);
     setTDescription("");
     setIsTimelineModalOpen(true);
   };
@@ -251,6 +255,8 @@ export default function AdminDashboard() {
     setTTrack(item.track);
     setTStartYear(item.start_year);
     setTEndYear(item.end_year || item.start_year);
+    setTIsFeatured(item.is_featured !== undefined ? item.is_featured : true);
+    setTColumnSlot(item.column_slot || 1);
     setTDescription(item.desc);
     setIsTimelineModalOpen(true);
   };
@@ -274,6 +280,8 @@ export default function AdminDashboard() {
           track: tTrack,
           start_year: tStartYear,
           end_year: tEndYear,
+          is_featured: tIsFeatured,
+          column_slot: tColumnSlot,
           description: tDescription
         });
         showToast('success', 'Timeline clip berhasil diperbarui!');
@@ -287,6 +295,8 @@ export default function AdminDashboard() {
           track: tTrack,
           start_year: tStartYear,
           end_year: tEndYear,
+          is_featured: tIsFeatured,
+          column_slot: tColumnSlot,
           description: tDescription,
           display_order: timelineList.length + 1
         });
@@ -1061,6 +1071,33 @@ export default function AdminDashboard() {
                       <option value="blue">Blue (V1 Main)</option>
                       <option value="amber">Amber (BTS / Audio)</option>
                       <option value="purple">Purple (Premiere / Special)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Highlight Toggle & Column Slot */}
+                <div className="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+                  <label className="flex items-center gap-2.5 cursor-pointer text-xs font-bold text-white">
+                    <input
+                      type="checkbox"
+                      checked={tIsFeatured}
+                      onChange={(e) => setTIsFeatured(e.target.checked)}
+                      className="w-4 h-4 rounded border-white/20 bg-neutral-950 text-blue-500 focus:ring-0 cursor-pointer"
+                    />
+                    <span>Tampilkan sebagai Highlight di Homepage</span>
+                  </label>
+
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-gray-300">Posisi Kolom Sequence (Homepage)</label>
+                    <select
+                      value={tColumnSlot}
+                      onChange={(e) => setTColumnSlot(parseInt(e.target.value))}
+                      className="w-full px-3 py-1.5 rounded-lg bg-neutral-950 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500 font-mono"
+                    >
+                      <option value={1}>Kolom 1 (Seq 01 / Early)</option>
+                      <option value={2}>Kolom 2 (Seq 02 / Growth)</option>
+                      <option value={3}>Kolom 3 (Seq 03 / Featured)</option>
+                      <option value={4}>Kolom 4 (Seq 04 / Recent)</option>
                     </select>
                   </div>
                 </div>

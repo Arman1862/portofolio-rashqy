@@ -12,6 +12,8 @@ export interface TimelineEventItem {
   track: 'V2' | 'V1' | 'A1' | 'A2';
   start_year: number;
   end_year?: number;
+  is_featured: boolean;
+  column_slot: number;
   colorClass: string;
   dotClass: string;
   glowClass: string;
@@ -30,6 +32,8 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     track: "V1",
     start_year: 2023,
     end_year: 2025,
+    is_featured: true,
+    column_slot: 1,
     colorClass: "text-blue-400 border-blue-500/30 bg-blue-500/10",
     dotClass: "border-blue-500",
     glowClass: "bg-blue-500/20",
@@ -46,6 +50,8 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     track: "A1",
     start_year: 2025,
     end_year: 2025,
+    is_featured: true,
+    column_slot: 3,
     colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
     dotClass: "border-amber-500",
     glowClass: "bg-amber-500/20",
@@ -62,6 +68,8 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     track: "V2",
     start_year: 2025,
     end_year: 2025,
+    is_featured: true,
+    column_slot: 3,
     colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
     dotClass: "border-amber-500",
     glowClass: "bg-amber-500/20",
@@ -78,6 +86,8 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     track: "A2",
     start_year: 2025,
     end_year: 2025,
+    is_featured: true,
+    column_slot: 3,
     colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
     dotClass: "border-amber-500",
     glowClass: "bg-amber-500/20",
@@ -94,6 +104,8 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     track: "V1",
     start_year: 2026,
     end_year: 2026,
+    is_featured: true,
+    column_slot: 4,
     colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
     dotClass: "border-purple-500",
     glowClass: "bg-purple-500/20",
@@ -110,6 +122,8 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     track: "V2",
     start_year: 2026,
     end_year: 2026,
+    is_featured: true,
+    column_slot: 4,
     colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
     dotClass: "border-purple-500",
     glowClass: "bg-purple-500/20",
@@ -141,8 +155,8 @@ export function getTimelineColorClasses(color: 'blue' | 'amber' | 'purple') {
   }
 }
 
-export function getColStartClass(startYear: number): string {
-  const col = Math.max(1, Math.min(4, startYear - 2022));
+export function getColStartClass(startYear: number, columnSlot?: number): string {
+  const col = columnSlot || Math.max(1, Math.min(4, startYear - 2022));
   switch (col) {
     case 1: return "col-start-1";
     case 2: return "col-start-2";
@@ -152,7 +166,8 @@ export function getColStartClass(startYear: number): string {
   }
 }
 
-export function getColSpanClass(startYear: number, endYear?: number): string {
+export function getColSpanClass(startYear: number, endYear?: number, columnSlot?: number): string {
+  if (columnSlot) return "col-span-1";
   const startCol = Math.max(1, Math.min(4, startYear - 2022));
   const endCol = Math.max(startCol, Math.min(4, (endYear || startYear) - 2022));
   const span = Math.max(1, Math.min(4 - startCol + 1, endCol - startCol + 1));
@@ -199,6 +214,8 @@ export function mapDbToTimelineEvent(row: any): TimelineEventItem {
     track: row.track || 'V1',
     start_year: row.start_year || 2025,
     end_year: row.end_year || row.start_year || 2025,
+    is_featured: row.is_featured !== undefined ? row.is_featured : true,
+    column_slot: row.column_slot || 1,
     colorClass: colorStyles.colorClass,
     dotClass: colorStyles.dotClass,
     glowClass: colorStyles.glowClass,
@@ -247,6 +264,8 @@ export async function createTimelineEvent(item: {
   track: 'V2' | 'V1' | 'A1' | 'A2';
   start_year: number;
   end_year?: number;
+  is_featured?: boolean;
+  column_slot?: number;
   display_order?: number;
 }) {
   if (!supabase) throw new Error("Supabase is not configured.");
@@ -264,6 +283,8 @@ export async function createTimelineEvent(item: {
       track: item.track,
       start_year: item.start_year,
       end_year: item.end_year || item.start_year,
+      is_featured: item.is_featured !== undefined ? item.is_featured : true,
+      column_slot: item.column_slot || 1,
       display_order: item.display_order || 0
     })
     .select()
@@ -288,6 +309,8 @@ export async function updateTimelineEvent(
     track: 'V2' | 'V1' | 'A1' | 'A2';
     start_year: number;
     end_year: number;
+    is_featured: boolean;
+    column_slot: number;
     display_order: number;
   }>
 ) {

@@ -386,12 +386,15 @@ export default function Home() {
                       {/* Dynamic Timeline Clips Area */}
                       <div className="divide-y divide-white/5 select-none relative">
                         {(['V2', 'V1', 'A1', 'A2'] as const).map((trackName) => {
-                          const trackClips = eventsList.filter((e) => e.track === trackName);
+                          const featuredEvents = eventsList.filter((e) => e.is_featured);
+                          const activeList = featuredEvents.length > 0 ? featuredEvents : eventsList;
+                          const trackClips = activeList.filter((e) => e.track === trackName);
+
                           return (
                             <div key={trackName} className="grid grid-cols-4 w-full h-12 relative bg-neutral-950/10">
                               {trackClips.map((clip) => {
-                                const startCol = getColStartClass(clip.start_year);
-                                const spanCol = getColSpanClass(clip.start_year, clip.end_year);
+                                const startCol = getColStartClass(clip.start_year, clip.column_slot);
+                                const spanCol = getColSpanClass(clip.start_year, clip.end_year, clip.column_slot);
                                 const isActive = String(clip.id) === String(activeTimelineId);
                                 const clipStyle = getClipStyle(clip.color, isActive);
 
@@ -421,8 +424,20 @@ export default function Home() {
                 </div>
 
               </div>
-            </div>
 
+              {/* Full Timeline Workspace CTA Button */}
+              <div className="flex items-center justify-center pt-6">
+                <button
+                  onClick={() => navigate("/timeline")}
+                  className="px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-white text-xs font-bold font-sans flex items-center gap-2 shadow-xl hover:scale-105 transition-all cursor-pointer group"
+                >
+                  <Film size={14} className="text-blue-400 group-hover:rotate-12 transition-transform" />
+                  <span>EXPLORE FULL NLE SEQUENCE WORKSPACE ({eventsList.length} PROJECTS)</span>
+                  <ExternalLink size={14} className="text-gray-400" />
+                </button>
+              </div>
+
+            </div>
           </div>
         </div>
       </section>
