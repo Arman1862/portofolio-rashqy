@@ -391,10 +391,10 @@ export default function TimelinePage() {
                   onTouchStart={handleTouchStart}
                   className="h-8 border-b border-white/10 grid grid-cols-4 w-full bg-neutral-950/60 text-[10px] font-mono text-gray-400 cursor-ew-resize relative"
                 >
-                  <div className="border-r border-white/10 flex items-center px-3 font-bold">2023</div>
-                  <div className="border-r border-white/10 flex items-center px-3 font-bold">2024</div>
-                  <div className="border-r border-white/10 flex items-center px-3 font-bold">2025</div>
-                  <div className="flex items-center px-3 font-bold">2026</div>
+                  <div className="border-r border-white/10 flex items-center px-3 font-bold text-gray-300 font-mono">SEQ 01</div>
+                  <div className="border-r border-white/10 flex items-center px-3 font-bold text-gray-300 font-mono">SEQ 02</div>
+                  <div className="border-r border-white/10 flex items-center px-3 font-bold text-gray-300 font-mono">SEQ 03</div>
+                  <div className="flex items-center px-3 font-bold text-gray-300 font-mono">SEQ 04</div>
                 </div>
 
                 {/* Red Playhead Bar */}
@@ -413,8 +413,8 @@ export default function TimelinePage() {
                     return (
                       <div key={trackName} className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/20">
                         {trackClips.map((clip) => {
-                          const startCol = getColStartClass(clip.start_year);
-                          const spanCol = getColSpanClass(clip.start_year, clip.end_year);
+                          const startCol = getColStartClass(clip.start_year, clip.column_slot);
+                          const spanCol = getColSpanClass(clip.start_year, clip.end_year, clip.column_slot);
                           const isActive = String(clip.id) === String(activeTimelineId);
                           const clipStyle = getClipStyle(clip.color, isActive);
 

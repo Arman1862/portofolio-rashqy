@@ -368,10 +368,10 @@ export default function Home() {
                         onTouchStart={handleTouchStart}
                         className="h-8 border-b border-white/5 grid grid-cols-4 w-full bg-neutral-950/40 text-[9px] sm:text-[10px] font-mono text-gray-500 select-none cursor-ew-resize relative"
                       >
-                        <div className="border-r border-white/5 flex items-center px-2 py-1 select-none">2023</div>
-                        <div className="border-r border-white/5 flex items-center px-2 py-1 select-none">2024</div>
-                        <div className="border-r border-white/5 flex items-center px-2 py-1 select-none">2025</div>
-                        <div className="flex items-center px-2 py-1 select-none">2026</div>
+                        <div className="border-r border-white/5 flex items-center px-2 py-1 select-none font-bold text-gray-300 font-mono">SEQ 01</div>
+                        <div className="border-r border-white/5 flex items-center px-2 py-1 select-none font-bold text-gray-300 font-mono">SEQ 02</div>
+                        <div className="border-r border-white/5 flex items-center px-2 py-1 select-none font-bold text-gray-300 font-mono">SEQ 03</div>
+                        <div className="flex items-center px-2 py-1 select-none font-bold text-gray-300 font-mono">SEQ 04</div>
                       </div>
 
                       {/* Playhead Indicator (Red vertical line) */}
