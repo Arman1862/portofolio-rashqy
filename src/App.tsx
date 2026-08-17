@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Link, useLocation } from "react-router-dom";
 import { Instagram, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,7 +15,17 @@ export default function App() {
   const currentPath = location.pathname + location.hash;
   const isAdminRoute = location.pathname.startsWith("/admin");
 
+  useEffect(() => {
+    if (location.hash) {
+      const el = document.querySelector(location.hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
+
   const isHomeActive = currentPath === "/" || currentPath === "";
+  const isProjectsActive = currentPath === "/#timeline-section" || location.pathname === "/timeline";
   const isFilmsActive = currentPath === "/works#films" || (location.pathname === "/works" && !location.hash);
   const isEditingActive = currentPath === "/works#editing";
   const isPhotoActive = currentPath === "/works#photography";
@@ -60,6 +70,16 @@ export default function App() {
               }`}
             >
               HOME
+            </Link>
+            <Link
+              to="/#timeline-section"
+              className={`px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wider transition-all duration-300 ${
+                isProjectsActive
+                  ? "text-blue-400 bg-blue-500/10 border border-blue-500/20"
+                  : "text-muted-foreground hover:text-white hover:bg-white/5 border border-transparent"
+              }`}
+            >
+              PROJECTS
             </Link>
             <Link
               to="/works#films"
@@ -134,6 +154,18 @@ export default function App() {
               >
                 <span>HOME</span>
                 {isHomeActive && <span className="w-1 h-1 rounded-full bg-blue-400"></span>}
+              </Link>
+              <Link
+                to="/#timeline-section"
+                onClick={() => setMobileMenuOpen(false)}
+                className={`px-4 py-2.5 rounded-xl text-[10px] font-bold tracking-wider transition-all duration-300 flex justify-between items-center ${
+                  isProjectsActive
+                    ? "text-blue-400 bg-blue-500/10 border border-blue-500/20"
+                    : "text-muted-foreground hover:text-white hover:bg-white/5 border border-transparent"
+                }`}
+              >
+                <span>PROJECTS</span>
+                {isProjectsActive && <span className="w-1 h-1 rounded-full bg-blue-400"></span>}
               </Link>
               <Link
                 to="/works#films"

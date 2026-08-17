@@ -40,13 +40,32 @@ export interface TimelineEventItem {
 }
 
 export const defaultTimelineEvents: TimelineEventItem[] = [
+  // SEQ 01 (Col 1)
   {
-    id: 1,
+    id: "1",
     title: "School Event Documentation",
     subtitle: "SMKN 53 Jakarta",
     period: "2023–2025",
-    desc: "Documented various school events through photography and video coverage over a two-year period.",
+    desc: "Mengabadikan berbagai momen, kegiatan, dan cerita dari kehidupan sekolah selama dua tahun.",
     timecode: "00:23:05:12",
+    color: "amber",
+    track: "V2",
+    start_year: 2023,
+    end_year: 2025,
+    is_featured: true,
+    column_slot: 1,
+    colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
+    dotClass: "border-amber-500",
+    glowClass: "bg-amber-500/20",
+    display_order: 1
+  },
+  {
+    id: "2",
+    title: "Three Short Films",
+    subtitle: "SMKN 53 Jakarta",
+    period: "2023-2025",
+    desc: "Tiga film pendek yang saya produksi dari tahap penulisan, penyutradaraan, hingga penyuntingan sebagai bagian dari perjalanan kreatif di SMKN 53 Jakarta.",
+    timecode: "00:23:05:17",
     color: "blue",
     track: "V1",
     start_year: 2023,
@@ -56,15 +75,109 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     colorClass: "text-blue-400 border-blue-500/30 bg-blue-500/10",
     dotClass: "border-blue-500",
     glowClass: "bg-blue-500/20",
-    display_order: 1
+    display_order: 2
   },
+
+  // SEQ 02 (Col 2)
   {
-    id: 2,
+    id: "3",
     title: "Lokakarya Placemaker Muda",
     subtitle: "Kami Ruang Ketiga",
     period: "2025",
-    desc: "Produced visual documentation capturing discussions, activities, and workshop atmosphere.",
-    timecode: "00:25:01:00",
+    desc: "Merekam perjalanan kolaboratif anak muda dalam memahami dan membentuk ruang di sekitarnya.",
+    timecode: "00:25:00:00",
+    color: "amber",
+    track: "V2",
+    start_year: 2025,
+    end_year: 2025,
+    is_featured: true,
+    column_slot: 2,
+    colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
+    dotClass: "border-amber-500",
+    glowClass: "bg-amber-500/20",
+    display_order: 3
+  },
+  {
+    id: "4",
+    title: "Talkshow Sal Priadi",
+    subtitle: "KindShow",
+    period: "2025",
+    desc: "Mengolah footage talkshow menjadi video yang dinamis dengan menjaga alur, ritme, dan momen interaksi selama acara.",
+    timecode: "00:25:00:00",
+    color: "blue",
+    track: "V1",
+    start_year: 2025,
+    end_year: 2025,
+    is_featured: true,
+    column_slot: 2,
+    colorClass: "text-blue-400 border-blue-500/30 bg-blue-500/10",
+    dotClass: "border-blue-500",
+    glowClass: "bg-blue-500/20",
+    display_order: 4
+  },
+  {
+    id: "5",
+    title: "Behind The Scenes - Operasi Pesta Ccpet",
+    subtitle: "Imajinari",
+    period: "2025",
+    desc: "Dokumentasi di balik proses produksi yang menangkap dinamika, momen, dan aktivitas selama proses shooting.",
+    timecode: "00:25:00:00",
+    color: "amber",
+    track: "A1",
+    start_year: 2025,
+    end_year: 2025,
+    is_featured: true,
+    column_slot: 2,
+    colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
+    dotClass: "border-amber-500",
+    glowClass: "bg-amber-500/20",
+    display_order: 5
+  },
+
+  // SEQ 03 (Col 3)
+  {
+    id: "6",
+    title: "Gala Premiere Film - Andai Waktu Bisa Diulang Kembali",
+    subtitle: "FMM Studios",
+    period: "2026",
+    desc: "Menangkap atmosfer gala premiere, dari momen kedatangan hingga perayaan film bersama para pemain dan tamu.",
+    timecode: "00:25:00:00",
+    color: "purple",
+    track: "V2",
+    start_year: 2025,
+    end_year: 2025,
+    is_featured: true,
+    column_slot: 3,
+    colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
+    dotClass: "border-purple-500",
+    glowClass: "bg-purple-500/20",
+    display_order: 6
+  },
+  {
+    id: "7",
+    title: "Editor Promosi Film - Andai Waktu Bisa Diulang Kembali",
+    subtitle: "FMM Studios",
+    period: "2026",
+    desc: "Mengemas cerita dan identitas film ke dalam materi promosi visual yang menarik.",
+    timecode: "00:25:00:00",
+    color: "blue",
+    track: "V1",
+    start_year: 2025,
+    end_year: 2025,
+    is_featured: true,
+    column_slot: 3,
+    colorClass: "text-blue-400 border-blue-500/30 bg-blue-500/10",
+    dotClass: "border-blue-500",
+    glowClass: "bg-blue-500/20",
+    display_order: 7
+  },
+  {
+    id: "8",
+    title: "Screening & Discussion - SINILAH Batch #3",
+    subtitle: "SINILAH",
+    period: "2025",
+    desc: "Merekam suasana pemutaran film dan dinamika diskusi yang mempertemukan karya, pembuat film, dan penonton.",
+    timecode: "00:25:00:00",
     color: "amber",
     track: "A1",
     start_year: 2025,
@@ -74,51 +187,35 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
     dotClass: "border-amber-500",
     glowClass: "bg-amber-500/20",
-    display_order: 2
+    display_order: 8
   },
+
+  // SEQ 04 (Col 4)
   {
-    id: 3,
-    title: "Behind The Scenes — Operasi Pesta Pora",
-    subtitle: "Imajinari",
-    period: "2025",
-    desc: "Captured behind-the-scenes moments and production activities during the filming process.",
-    timecode: "00:25:02:18",
-    color: "amber",
-    track: "V2",
-    start_year: 2025,
-    end_year: 2025,
-    is_featured: true,
-    column_slot: 3,
-    colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
-    dotClass: "border-amber-500",
-    glowClass: "bg-amber-500/20",
-    display_order: 3
-  },
-  {
-    id: 4,
-    title: "Screening & Discussion — SINILAH Batch #3",
-    subtitle: "SINILAH",
-    period: "2025",
-    desc: "Documented screening sessions and public discussions through cinematic event coverage.",
-    timecode: "00:25:03:09",
-    color: "amber",
-    track: "A2",
-    start_year: 2025,
-    end_year: 2025,
-    is_featured: true,
-    column_slot: 3,
-    colorClass: "text-amber-400 border-amber-500/30 bg-amber-500/10",
-    dotClass: "border-amber-500",
-    glowClass: "bg-amber-500/20",
-    display_order: 4
-  },
-  {
-    id: 5,
-    title: "Gala Premiere Teman Tegar Maira",
+    id: "9",
+    title: "Gala Premiere Film - Teman Tegar Maira",
     subtitle: "Aksa Bumi Langit",
     period: "2026",
-    desc: "Created visual documentation focused on event moments, interactions, and storytelling elements.",
-    timecode: "00:26:01:24",
+    desc: "Dokumentasi visual yang menangkap momen, interaksi, dan suasana acara.",
+    timecode: "00:26:00:00",
+    color: "purple",
+    track: "V2",
+    start_year: 2026,
+    end_year: 2026,
+    is_featured: true,
+    column_slot: 4,
+    colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
+    dotClass: "border-purple-500",
+    glowClass: "bg-purple-500/20",
+    display_order: 9
+  },
+  {
+    id: "10",
+    title: "Travel Documentation — Pelepasan Tunas Harapan",
+    subtitle: "Pesona Mahardika",
+    period: "2026",
+    desc: "Mengabadikan perjalanan, momen kebersamaan, dan cerita di sepanjang rangkaian kegiatan.",
+    timecode: "00:26:02:11",
     color: "purple",
     track: "V1",
     start_year: 2026,
@@ -128,17 +225,17 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
     dotClass: "border-purple-500",
     glowClass: "bg-purple-500/20",
-    display_order: 5
+    display_order: 10
   },
   {
-    id: 6,
-    title: "Travel Documentation — Pelepasan Tunas Harapan",
-    subtitle: "Pesona Mahardika",
+    id: "11",
+    title: "Hammer Fight Series 3",
+    subtitle: "Muh Ismail Said",
     period: "2026",
-    desc: "Produced travel-style visual documentation highlighting journeys, activities, and emotional moments.",
-    timecode: "00:26:02:11",
+    desc: "Menangkap intensitas pertandingan dan atmosfer arena melalui dokumentasi visual yang dinamis.",
+    timecode: "00:25:00:00",
     color: "purple",
-    track: "V2",
+    track: "A1",
     start_year: 2026,
     end_year: 2026,
     is_featured: true,
@@ -146,7 +243,43 @@ export const defaultTimelineEvents: TimelineEventItem[] = [
     colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
     dotClass: "border-purple-500",
     glowClass: "bg-purple-500/20",
-    display_order: 6
+    display_order: 11
+  },
+  {
+    id: "12",
+    title: "Video Angkatan - 3 Years We Are Together",
+    subtitle: "SMKN 53 Jakarta",
+    period: "2026",
+    desc: "Sebuah perjalanan visual yang merangkum tiga tahun kebersamaan, dari awal mengenal hingga akhirnya berpisah sebagai satu angkatan.",
+    timecode: "00:25:00:00",
+    color: "purple",
+    track: "A2",
+    start_year: 2026,
+    end_year: 2026,
+    is_featured: true,
+    column_slot: 4,
+    colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
+    dotClass: "border-purple-500",
+    glowClass: "bg-purple-500/20",
+    display_order: 12
+  },
+  {
+    id: "13",
+    title: "Jakarta Boxing Open Vol. 5",
+    subtitle: "Egi Rozten",
+    period: "2026",
+    desc: "Merekam intensitas pertandingan, momen pertarungan, dan atmosfer kompetisi di atas ring.",
+    timecode: "00:25:00:00",
+    color: "purple",
+    track: "A3",
+    start_year: 2026,
+    end_year: 2026,
+    is_featured: true,
+    column_slot: 4,
+    colorClass: "text-purple-400 border-purple-500/30 bg-purple-500/10",
+    dotClass: "border-purple-500",
+    glowClass: "bg-purple-500/20",
+    display_order: 13
   }
 ];
 
@@ -284,6 +417,12 @@ export async function fetchTimelineEvents(): Promise<TimelineEventItem[]> {
   }
 }
 
+export function normalizeDbColor(color?: string): 'blue' | 'amber' | 'purple' {
+  if (color === 'amber') return 'amber';
+  if (color === 'purple' || color === 'indigo' || color === 'rose') return 'purple';
+  return 'blue';
+}
+
 /**
  * Creates a new timeline event clip in Supabase.
  */
@@ -303,6 +442,8 @@ export async function createTimelineEvent(item: {
 }) {
   if (!supabase) throw new Error("Supabase is not configured.");
 
+  const safeColor = normalizeDbColor(item.color);
+
   const { data, error } = await supabase
     .from("timeline_events")
     .insert({
@@ -312,7 +453,7 @@ export async function createTimelineEvent(item: {
       period: item.period,
       description: item.description,
       timecode: item.timecode || "00:25:00:00",
-      color: item.color,
+      color: safeColor,
       track: item.track,
       start_year: item.start_year,
       end_year: item.end_year || item.start_year,
@@ -350,6 +491,9 @@ export async function updateTimelineEvent(
   if (!supabase) throw new Error("Supabase is not configured.");
 
   const updatePayload: any = { ...item, updated_at: new Date().toISOString() };
+  if (item.color !== undefined) {
+    updatePayload.color = normalizeDbColor(item.color);
+  }
 
   const { data, error } = await supabase
     .from("timeline_events")

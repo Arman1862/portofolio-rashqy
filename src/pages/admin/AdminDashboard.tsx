@@ -809,32 +809,21 @@ export default function AdminDashboard() {
               </div>
             ) : (
               <div className="space-y-6">
-                {(['V2', 'V1', 'A1', 'A2'] as const).map((trackName) => {
-                  const trackClips = timelineList.filter((t) => t.track === trackName);
-                  let trackTitle = "Track V1: MAIN (Primary Video)";
-                  let trackColorClass = "border-blue-500/30 text-blue-400 bg-blue-500/10";
-                  if (trackName === 'V2') {
-                    trackTitle = "Track V2: BTS (Behind The Scenes & Secondary)";
-                    trackColorClass = "border-amber-500/30 text-amber-400 bg-amber-500/10";
-                  } else if (trackName === 'A1') {
-                    trackTitle = "Track A1: AUD (Audio & Workshop Docs)";
-                    trackColorClass = "border-emerald-500/30 text-emerald-400 bg-emerald-500/10";
-                  } else if (trackName === 'A2') {
-                    trackTitle = "Track A2: DIA (Discussion & Dialogue)";
-                    trackColorClass = "border-purple-500/30 text-purple-400 bg-purple-500/10";
-                  }
+                {tracksList.map((track) => {
+                  const trackClips = timelineList.filter((t) => t.track === track.track_key);
+                  const colorStyles = getTimelineColorClasses(track.color);
 
                   return (
-                    <div key={trackName} className="space-y-3">
+                    <div key={track.id} className="space-y-3">
                       <div className="flex items-center justify-between px-1">
-                        <span className={`text-xs font-mono font-bold px-3 py-1 rounded-lg border ${trackColorClass}`}>
-                          {trackTitle} ({trackClips.length})
+                        <span className={`text-xs font-mono font-bold px-3 py-1 rounded-lg border ${colorStyles.colorClass}`}>
+                          Track {track.track_key}: {track.name} ({trackClips.length})
                         </span>
                       </div>
 
                       {trackClips.length === 0 ? (
                         <div className="p-4 border border-white/5 rounded-xl text-center text-xs text-gray-500 font-mono bg-neutral-900/20">
-                          Tidak ada clip di {trackName}
+                          Tidak ada clip di Track {track.track_key}
                         </div>
                       ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -904,6 +893,63 @@ export default function AdminDashboard() {
                     </div>
                   );
                 })}
+
+                {/* Uncategorized clips if any */}
+                {(() => {
+                  const knownKeys = new Set(tracksList.map((t) => t.track_key));
+                  const otherClips = timelineList.filter((t) => !knownKeys.has(t.track));
+                  if (otherClips.length === 0) return null;
+                  return (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between px-1">
+                        <span className="text-xs font-mono font-bold px-3 py-1 rounded-lg border border-gray-500/30 text-gray-400 bg-gray-500/10">
+                          Track Lainnya / Uncategorized ({otherClips.length})
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {otherClips.map((item) => (
+                          <div
+                            key={item.id}
+                            className="bg-neutral-900/80 border border-white/10 p-5 rounded-2xl flex flex-col justify-between space-y-4 hover:border-white/20 transition-all"
+                          >
+                            <div className="space-y-2">
+                              <div className="flex items-start justify-between gap-2">
+                                <div>
+                                  <h4 className="text-sm font-bold text-white leading-tight">
+                                    {item.title}
+                                  </h4>
+                                  <p className="text-xs text-gray-400 font-medium mt-0.5">
+                                    {item.subtitle} (Track: {item.track})
+                                  </p>
+                                </div>
+                                <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border font-bold ${item.colorClass}`}>
+                                  {item.color.toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="pt-3 border-t border-white/5 flex items-center justify-end gap-2">
+                                <button
+                                  onClick={() => handleOpenEditTimelineModal(item)}
+                                  className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                                >
+                                  <Edit size={14} />
+                                  <span>Edit Clip</span>
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteTimeline(item.id)}
+                                  disabled={deletingTimelineId === item.id}
+                                  className="px-3 py-1.5 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
+                                >
+                                  <Trash2 size={14} />
+                                  <span>Hapus</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             )}
           </div>
@@ -1207,13 +1253,9 @@ export default function AdminDashboard() {
                       onChange={(e) => setTColor(e.target.value)}
                       className="w-full px-4 py-2.5 rounded-xl bg-neutral-950 border border-white/10 text-white text-sm focus:outline-none focus:border-blue-500"
                     >
-                      <option value="blue">Blue (Primary)</option>
-                      <option value="amber">Amber (BTS / Audio)</option>
-                      <option value="purple">Purple (Special)</option>
-                      <option value="emerald">Emerald (Green)</option>
-                      <option value="rose">Rose (Red/Pink)</option>
-                      <option value="cyan">Cyan (Light Blue)</option>
-                      <option value="indigo">Indigo (Deep Purple)</option>
+                      <option value="blue">Blue (Primary / Video)</option>
+                      <option value="amber">Amber (BTS / Audio / Docs)</option>
+                      <option value="purple">Purple (Special / Premiere / Narrative)</option>
                     </select>
                   </div>
                 </div>

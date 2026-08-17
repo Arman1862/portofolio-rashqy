@@ -7,11 +7,9 @@ import {
   ArrowLeft,
   Play,
   Pause,
-  RotateCcw,
   Calendar,
   Clock,
   Layers,
-  Search,
   Sparkles,
   Palette,
   Camera,
@@ -39,10 +37,8 @@ export default function TimelinePage() {
     defaultTimelineEvents[0]?.id || 1
   );
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playheadPercent, setPlayheadPercent] = useState<number>(25);
+  const [playheadPercent, setPlayheadPercent] = useState<number>(12.5);
   const [isDraggingPlayhead, setIsDraggingPlayhead] = useState(false);
-  const [activeTrackFilter, setActiveTrackFilter] = useState<string>('ALL');
-  const [searchQuery, setSearchQuery] = useState("");
   const timelineContainerRef = useRef<HTMLDivElement>(null);
 
   // Fetch all timeline events & tracks from Supabase
@@ -53,6 +49,8 @@ export default function TimelinePage() {
         if (eventsData && eventsData.length > 0) {
           setEventsList(eventsData);
           setActiveTimelineId(eventsData[0].id);
+          const firstCol = eventsData[0].column_slot || Math.max(1, Math.min(4, eventsData[0].start_year - 2022));
+          setPlayheadPercent((firstCol - 0.5) * 25);
         }
         if (tracksData && tracksData.length > 0) {
           setTracksList(tracksData);
@@ -72,14 +70,22 @@ export default function TimelinePage() {
         setPlayheadPercent((prev) => {
           if (prev >= 100) {
             setIsPlaying(false);
-            return 0;
+            return 12.5;
           }
-          return prev + 0.2;
+          const nextPercent = prev + 0.25;
+          const colIndex = Math.max(1, Math.min(4, Math.floor(nextPercent / 25) + 1));
+          const match = eventsList.find(
+            (e) => (e.column_slot || Math.max(1, Math.min(4, e.start_year - 2022))) === colIndex
+          );
+          if (match) {
+            setActiveTimelineId(match.id);
+          }
+          return nextPercent;
         });
       }, 50);
     }
     return () => clearInterval(interval);
-  }, [isPlaying]);
+  }, [isPlaying, eventsList]);
 
   const activeEvent =
     eventsList.find((e) => String(e.id) === String(activeTimelineId)) ||
@@ -90,10 +96,8 @@ export default function TimelinePage() {
     setActiveTimelineId(id);
     const target = eventsList.find((e) => String(e.id) === String(id));
     if (target) {
-      const startCol = Math.max(1, Math.min(4, target.start_year - 2022));
-      const endCol = Math.max(startCol, Math.min(4, (target.end_year || target.start_year) - 2022));
-      const centerCol = (startCol + endCol) / 2;
-      setPlayheadPercent((centerCol - 0.5) * 25);
+      const col = target.column_slot || Math.max(1, Math.min(4, target.start_year - 2022));
+      setPlayheadPercent((col - 0.5) * 25);
     }
   };
 
@@ -105,11 +109,10 @@ export default function TimelinePage() {
     percent = Math.max(0, Math.min(100, percent));
     setPlayheadPercent(percent);
 
-    // Auto-select clip matching scrubbed year
-    const yearIndex = Math.max(0, Math.min(3, Math.floor(percent / 25)));
-    const targetYear = 2023 + yearIndex;
+    // Auto-select clip matching scrubbed sequence column (1 to 4)
+    const colIndex = Math.max(1, Math.min(4, Math.floor(percent / 25) + 1));
     const match = eventsList.find(
-      (e) => e.start_year <= targetYear && (e.end_year || e.start_year) >= targetYear
+      (e) => (e.column_slot || Math.max(1, Math.min(4, e.start_year - 2022))) === colIndex
     );
     if (match) {
       setActiveTimelineId(match.id);
@@ -155,15 +158,6 @@ export default function TimelinePage() {
     window.addEventListener("touchend", handleTouchEnd);
   };
 
-  const filteredEvents = eventsList.filter((e) => {
-    const matchesFilter = activeTrackFilter === 'ALL' || e.track === activeTrackFilter;
-    const matchesSearch =
-      e.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.subtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      e.desc.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
-
   return (
     <div className="min-h-screen bg-neutral-950 text-foreground font-sans flex flex-col select-none overflow-x-hidden">
       {/* --- TOP NLE CONTROL BAR --- */}
@@ -194,126 +188,58 @@ export default function TimelinePage() {
           </div>
         </div>
 
-        {/* Center Transport & Timecode Monitor */}
-        <div className="flex items-center gap-4">
-          {/* Timecode Digital Counter */}
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-950 border border-white/10 font-mono text-xs font-bold text-red-400 tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-            <span>{activeEvent?.timecode || "00:25:00:00"}</span>
-          </div>
-
-          {/* Transport buttons */}
-          <div className="flex items-center gap-1.5 p-1 bg-white/5 border border-white/10 rounded-xl text-gray-300">
-            <button
-              onClick={() => setPlayheadPercent(0)}
-              className="p-1.5 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer"
-              title="Reset Playhead"
-            >
-              <RotateCcw size={14} />
-            </button>
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-bold flex items-center gap-1 transition-all cursor-pointer shadow-lg shadow-blue-600/30"
-            >
-              {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-              <span className="hidden md:inline">{isPlaying ? "Pause" : "Play"}</span>
-            </button>
-          </div>
+        {/* Right Transport: Play Button Only */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setIsPlaying(!isPlaying)}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold flex items-center gap-2 transition-all cursor-pointer shadow-lg shadow-blue-600/30 active:scale-95"
+          >
+            {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+            <span>{isPlaying ? "Pause" : "Play"}</span>
+          </button>
         </div>
       </header>
 
       {/* --- MAIN WORKSPACE BODY (INSPECTOR + TIMELINE CANVAS) --- */}
       <div className="flex-1 flex flex-col lg:flex-row gap-6 p-4 md:p-6 max-w-[1700px] w-full mx-auto">
         
-        {/* LEFT COLUMN: CLIP INSPECTOR & MEDIA PREVIEW */}
-        <div className="w-full lg:w-96 flex flex-col gap-5 shrink-0">
-          
-          {/* Preview Monitor Card */}
+        {/* LEFT COLUMN: SLEEK CLIP INSPECTOR */}
+        <div className="w-full lg:w-80 flex flex-col gap-4 shrink-0">
           <div className="bg-neutral-900/80 border border-white/10 rounded-2xl p-5 shadow-2xl space-y-4 backdrop-blur-xl">
             <div className="flex items-center justify-between text-[11px] font-mono text-gray-400 border-b border-white/5 pb-3">
-              <span className="flex items-center gap-1 text-red-400 font-bold">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                PREVIEW MONITOR
+              <span className="flex items-center gap-1.5 text-blue-400 font-bold">
+                <Layers size={14} />
+                CLIP INSPECTOR
               </span>
-              <span>FPS: 23.976</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded border uppercase font-bold text-blue-400 bg-blue-500/10 border-blue-500/20">
+                {activeEvent?.track} LAYER
+              </span>
             </div>
 
-            {/* Media Player Container */}
-            <div className="relative aspect-video rounded-xl bg-neutral-950 border border-white/10 overflow-hidden group shadow-inner">
-              <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center space-y-2 bg-gradient-to-b from-neutral-900 to-neutral-950">
-                <div className={`p-3 rounded-full border shadow-xl ${activeEvent?.glowClass}`}>
-                  <Film size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-white line-clamp-1">{activeEvent?.title}</h3>
-                  <p className="text-xs text-blue-400 font-mono mt-0.5">{activeEvent?.subtitle}</p>
-                </div>
-              </div>
-
-              <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-gray-400 bg-neutral-950/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10">
-                <span>RES: 1920 x 1080</span>
-                <span className="text-white font-bold">{activeEvent?.period}</span>
-              </div>
-            </div>
-
-            {/* Inspector Details */}
-            <div className="space-y-3 pt-1">
+            <div className="space-y-3">
               <div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded border uppercase font-bold text-blue-400 bg-blue-500/10 border-blue-500/20">
-                  {activeEvent?.track} LAYER
-                </span>
-                <h2 className="text-lg font-bold text-white leading-tight font-heading mt-2">
+                <h2 className="text-lg font-bold text-white leading-tight font-heading">
                   {activeEvent?.title}
                 </h2>
-                <p className="text-xs font-semibold text-blue-400 font-mono mt-0.5">
+                <p className="text-xs font-semibold text-blue-400 font-mono mt-1">
                   Client / Org: {activeEvent?.subtitle}
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 text-xs font-mono text-gray-400 py-2 border-y border-white/5">
-                <span className="flex items-center gap-1">
+              <div className="flex items-center gap-4 text-xs font-mono text-gray-400 py-2.5 border-y border-white/5">
+                <span className="flex items-center gap-1.5">
                   <Calendar size={13} className="text-blue-400" />
                   {activeEvent?.period}
                 </span>
-                <span className="flex items-center gap-1">
+                <span className="flex items-center gap-1.5">
                   <Clock size={13} className="text-amber-400" />
                   {activeEvent?.timecode}
                 </span>
               </div>
 
-              <p className="text-xs text-gray-300 leading-relaxed bg-neutral-950/50 p-3.5 rounded-xl border border-white/5">
+              <p className="text-xs text-gray-300 leading-relaxed bg-neutral-950/50 p-4 rounded-xl border border-white/5">
                 {activeEvent?.desc || "Visual documentation capturing activities, production moments, and storytelling elements."}
               </p>
-            </div>
-          </div>
-
-          {/* Quick Filter & Search Box */}
-          <div className="bg-neutral-900/60 border border-white/10 p-4 rounded-2xl space-y-3">
-            <div className="relative">
-              <Search size={14} className="absolute left-3.5 top-3 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Cari project / klien..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-xl bg-neutral-950 border border-white/10 text-white text-xs focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px] font-mono">
-              {['ALL', ...tracksList.map(t => t.track_key)].map((trKey) => (
-                <button
-                  key={trKey}
-                  onClick={() => setActiveTrackFilter(trKey)}
-                  className={`px-3 py-1 rounded-lg border font-bold transition-all cursor-pointer ${
-                    activeTrackFilter === trKey
-                      ? 'bg-blue-500 text-white border-blue-400 shadow-md shadow-blue-500/30'
-                      : 'bg-white/5 border-white/10 text-gray-400 hover:text-white'
-                  }`}
-                >
-                  {trKey}
-                </button>
-              ))}
             </div>
           </div>
         </div>
@@ -329,12 +255,8 @@ export default function TimelinePage() {
                 SEQUENCE TIMELINE CANVAS
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 bg-neutral-950 rounded border border-white/10 text-gray-400 font-bold">
-                {filteredEvents.length} Clips ({tracksList.length} Tracks)
+                {eventsList.length} Clips ({tracksList.length} Tracks)
               </span>
-            </div>
-
-            <div className="text-[11px] font-mono text-gray-400 hidden sm:block">
-              Click & drag playhead line to scrub timeline
             </div>
           </div>
 
@@ -395,7 +317,7 @@ export default function TimelinePage() {
                 {/* Track Clips Grid Area */}
                 <div className="divide-y divide-white/5 relative">
                   {tracksList.map((track) => {
-                    const trackClips = filteredEvents.filter((e) => e.track === track.track_key);
+                    const trackClips = eventsList.filter((e) => e.track === track.track_key);
                     return (
                       <div key={track.id} className="grid grid-cols-4 w-full h-16 relative bg-neutral-950/20">
                         {trackClips.map((clip) => {

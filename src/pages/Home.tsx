@@ -64,7 +64,7 @@ export default function Home() {
     }
   }, [eventsList]);
 
-  const [playheadPercent, setPlayheadPercent] = useState<number>(37.5);
+  const [playheadPercent, setPlayheadPercent] = useState<number>(12.5);
   const [isDraggingPlayhead, setIsDraggingPlayhead] = useState(false);
   const timelineContainerRef = useRef<HTMLDivElement>(null);
 
@@ -77,24 +77,22 @@ export default function Home() {
     setActiveTimelineId(id);
     const target = eventsList.find((e) => String(e.id) === String(id));
     if (target) {
-      const startCol = Math.max(1, Math.min(4, target.start_year - 2022));
-      const endCol = Math.max(startCol, Math.min(4, (target.end_year || target.start_year) - 2022));
-      const centerCol = (startCol + endCol) / 2;
-      setPlayheadPercent((centerCol - 0.5) * 25);
+      const col = target.column_slot || Math.max(1, Math.min(4, target.start_year - 2022));
+      setPlayheadPercent((col - 0.5) * 25);
     }
   };
 
   const getProjectForPercent = (percent: number, currentActiveId: string | number): string | number => {
     if (!eventsList || eventsList.length === 0) return currentActiveId;
-    const yearIndex = Math.max(0, Math.min(3, Math.floor(percent / 25)));
-    const targetYear = 2023 + yearIndex;
+    const colIndex = Math.max(1, Math.min(4, Math.floor(percent / 25) + 1));
 
     const currentCover = eventsList.find(e => String(e.id) === String(currentActiveId));
-    if (currentCover && currentCover.start_year <= targetYear && (currentCover.end_year || currentCover.start_year) >= targetYear) {
+    const currentCol = currentCover ? (currentCover.column_slot || Math.max(1, Math.min(4, currentCover.start_year - 2022))) : 0;
+    if (currentCol === colIndex) {
       return currentActiveId;
     }
 
-    const match = eventsList.find(e => e.start_year <= targetYear && (e.end_year || e.start_year) >= targetYear);
+    const match = eventsList.find(e => (e.column_slot || Math.max(1, Math.min(4, e.start_year - 2022))) === colIndex);
     return match ? match.id : (eventsList[0]?.id || currentActiveId);
   };
 
